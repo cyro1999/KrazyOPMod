@@ -1,9 +1,6 @@
 package me.StevenLawson.TotalFreedomMod;
 
-import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandHandler;
-import me.StevenLawson.TotalFreedomMod.World.TFM_Flatlands;
-import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
-import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
+import com.Cyro1999.KrazyOPMod.Listeners.KOM_PlayerListener;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -14,9 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandHandler;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandLoader;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.HTTPD.TFM_HTTPD_Manager;
 import me.StevenLawson.TotalFreedomMod.Listener.*;
+import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
+import me.StevenLawson.TotalFreedomMod.World.TFM_Flatlands;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -118,6 +119,7 @@ public class TotalFreedomMod extends JavaPlugin
         pm.registerEvents(new TFM_WeatherListener(), plugin);
         pm.registerEvents(new TFM_ServerListener(), plugin);
         pm.registerEvents(new TFM_TelnetListener(), plugin);
+        pm.registerEvents(new KOM_PlayerListener(), plugin);
 
         try
         {
@@ -178,7 +180,6 @@ public class TotalFreedomMod extends JavaPlugin
 
         TFM_ServiceChecker.getInstance().start();
         TFM_HTTPD_Manager.getInstance().start();
-        TFM_FrontDoor.getInstance().start();
 
         TFM_Log.info("Version " + pluginVersion + " enabled");
 
