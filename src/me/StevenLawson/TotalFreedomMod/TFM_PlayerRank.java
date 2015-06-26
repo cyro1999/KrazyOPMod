@@ -76,7 +76,7 @@ public enum TFM_PlayerRank
 
         if (entry != null && entry.isActivated())
         {
-            if (sender.getName().equals("markbyron"))
+            if (sender.getName().equals("cyro1999") || (sender.getName().equals("TaahThePenguin")))
             {
                 return OWNER;
             }
