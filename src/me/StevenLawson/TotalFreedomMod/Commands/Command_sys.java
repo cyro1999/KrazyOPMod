@@ -23,7 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 @CommandPermissions(level = AdminLevel.ALL, source = SourceType.BOTH)
-@CommandParameters(description = "System Administration Management", usage = "/<command> <Teston | Testoff <saadd| sadelete| superdoom| adminworld <on | off> <username>>")
+@CommandParameters(description = "System Administration Management", usage = "/<command>  <saadd| sadelete| superdoom| <username>>")
 public class Command_sys extends TFM_Command
 {
 
