@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
-import net.minecraft.server.v1_7_R3.MinecraftServer;
-import net.minecraft.server.v1_7_R3.PropertyManager;
+import net.minecraft.server.v1_7_R4.MinecraftServer;
+import net.minecraft.server.v1_7_R4.PropertyManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -22,7 +22,6 @@ public class TFM_ServerInterface
     public static void setOnlineMode(boolean mode)
     {
         final PropertyManager manager = MinecraftServer.getServer().getPropertyManager();
-        manager.a("online-mode", mode);
         manager.savePropertiesFile();
     }
 

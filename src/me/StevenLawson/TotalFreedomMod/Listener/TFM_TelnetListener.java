@@ -42,12 +42,4 @@ public class TFM_TelnetListener implements Listener
         event.setName(player.getName());
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onTelnetCommand(TelnetCommandEvent event)
-    {
-        if (TFM_CommandBlocker.getInstance().isCommandBlocked(event.getCommand(), event.getSender()))
-        {
-            event.setCancelled(true);
-        }
-    }
 }
