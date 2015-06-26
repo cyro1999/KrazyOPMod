@@ -1,10 +1,6 @@
 package me.StevenLawson.TotalFreedomMod;
 
 import com.Cyro1999.KrazyOPMod.KOM_Util;
-import static me.StevenLawson.TotalFreedomMod.TFM_Util.DEVELOPERS;
-import static com.Cyro1999.KrazyOPMod.KOM_Util.EXECUTIVES;
-import static com.Cyro1999.KrazyOPMod.KOM_Util.SYSTEMADMINS;
-import static com.Cyro1999.KrazyOPMod.KOM_Util.DEVELOPERS;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,7 +16,7 @@ public enum TFM_PlayerRank
     SENIOR("a " + ChatColor.LIGHT_PURPLE + "Senior Admin", ChatColor.LIGHT_PURPLE + "(SrA)"),
     EXECUTIVE("a " + ChatColor.BLUE + "Executive", ChatColor.BLUE + "(Executive)"),
     SYSTEMADMIN("a " + ChatColor.DARK_GREEN + "System Admin", ChatColor.DARK_GREEN + "(Sys-Admin)"),
-    OWNER("the " + ChatColor.DARK_RED + "Owner", ChatColor.DARK_RED + "(Owner)"),
+    OWNER("a " + ChatColor.DARK_RED + "Owner", ChatColor.DARK_RED + "(Owner)"),
     CONSOLE("The " + ChatColor.DARK_PURPLE + "Console", ChatColor.DARK_PURPLE + "(Console)");
     private String loginMessage;
     private String prefix;
