@@ -10,13 +10,14 @@ import com.Cyro1999.KrazyOPMod.KOM_Messages;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 /**
  *
  * @author Transport
  */
-public class KOM_ChatListener
+public class KOM_ChatListener implements Listener
 {
       @EventHandler
      public void onPlayerChat(AsyncPlayerChatEvent e) {

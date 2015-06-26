@@ -1,6 +1,7 @@
 package me.StevenLawson.TotalFreedomMod;
 
 import com.Cyro1999.KrazyOPMod.Config.KOM_Config;
+import com.Cyro1999.KrazyOPMod.Listeners.KOM_ChatListener;
 import com.Cyro1999.KrazyOPMod.Listeners.KOM_PlayerListener;
 import java.io.File;
 import java.io.FileFilter;
@@ -70,11 +71,7 @@ public class TotalFreedomMod extends JavaPlugin
     @Override
     public void onLoad()
     {
-        // More YAML Setting Up and information.
-        komconfig = new KOM_Config(plugin, "krazyconfig.yml");
-        komconfig.saveDefaultConfig();
-        config = komconfig.getConfig();
-        
+
         TotalFreedomMod.plugin = this;
         TotalFreedomMod.server = plugin.getServer();
         TotalFreedomMod.pluginName = plugin.getDescription().getName();
@@ -89,6 +86,12 @@ public class TotalFreedomMod extends JavaPlugin
     @Override
     public void onEnable()
     {
+        // More YAML Setting Up and information.
+        komconfig = new KOM_Config(plugin, "krazyconfig.yml");
+        komconfig.saveDefaultConfig();
+        config = komconfig.getConfig();
+        
+        
         TFM_Log.info("Made by Madgeek1450 and DarthSalamon");
         TFM_Log.info("Compiled " + buildDate + " by " + buildCreator);
 
@@ -129,6 +132,7 @@ public class TotalFreedomMod extends JavaPlugin
         pm.registerEvents(new TFM_ServerListener(), plugin);
         pm.registerEvents(new TFM_TelnetListener(), plugin);
         pm.registerEvents(new KOM_PlayerListener(), plugin);
+        pm.registerEvents(new KOM_ChatListener(), plugin);
 
         try
         {
