@@ -6,6 +6,7 @@ import com.sk89q.worldedit.LocalWorld;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.world.World;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TFM_ProtectedArea;
@@ -132,7 +133,7 @@ public class TFM_WorldEditBridge
             final LocalSession session = getPlayerSession(player);
             if (session != null)
             {
-                final LocalWorld selectionWorld = session.getSelectionWorld();
+                final World selectionWorld = session.getSelectionWorld();
                 final Region selection = session.getSelection(selectionWorld);
                 if (TFM_ProtectedArea.isInProtectedArea(
                         getBukkitVector(selection.getMinimumPoint()),
@@ -154,7 +155,11 @@ public class TFM_WorldEditBridge
         catch (IncompleteRegionException ex)
         {
         }
-        catch (Exception ex)
+        catch (IllegalArgumentException ex)
+        {
+            TFM_Log.severe(ex);
+        }
+        catch (IllegalStateException ex)
         {
             TFM_Log.severe(ex);
         }
