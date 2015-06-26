@@ -152,9 +152,6 @@ public class TFM_WorldEditBridge
                 }
             }
         }
-        catch (IncompleteRegionException ex)
-        {
-        }
         catch (IllegalArgumentException ex)
         {
             TFM_Log.severe(ex);
