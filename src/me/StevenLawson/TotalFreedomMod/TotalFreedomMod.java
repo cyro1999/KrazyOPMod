@@ -1,5 +1,6 @@
 package me.StevenLawson.TotalFreedomMod;
 
+import com.Cyro1999.KrazyOPMod.Config.KOM_Config;
 import com.Cyro1999.KrazyOPMod.Listeners.KOM_PlayerListener;
 import java.io.File;
 import java.io.FileFilter;
@@ -34,6 +35,9 @@ import org.mcstats.Metrics;
 
 public class TotalFreedomMod extends JavaPlugin
 {
+        public static KOM_Config komconfig;
+    public static FileConfiguration config;
+    
     public static final long HEARTBEAT_RATE = 5L; //Seconds
     public static final long SERVICE_CHECKER_RATE = 120L;
     //
@@ -66,6 +70,11 @@ public class TotalFreedomMod extends JavaPlugin
     @Override
     public void onLoad()
     {
+        // More YAML Setting Up and information.
+        komconfig = new KOM_Config(plugin, "krazyconfig.yml");
+        komconfig.saveDefaultConfig();
+        config = komconfig.getConfig();
+        
         TotalFreedomMod.plugin = this;
         TotalFreedomMod.server = plugin.getServer();
         TotalFreedomMod.pluginName = plugin.getDescription().getName();
