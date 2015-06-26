@@ -35,6 +35,11 @@ public class KOM_PlayerListener implements Listener
             player.setPlayerListName(ChatColor.DARK_GREEN + player.getName());
             TFM_PlayerData.getPlayerData(player).setTag("&8[&2System Administrator&8]");
         }
+        else if (KOM_Util.OWNERS.contains(player.getName()))
+        {
+            player.setPlayerListName(ChatColor.DARK_RED + player.getName());
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&4Owner&8]");
+        }
         else if (KOM_Util.EXECUTIVES.contains(player.getName()))
         {
             player.setPlayerListName(ChatColor.BLUE + player.getName());
