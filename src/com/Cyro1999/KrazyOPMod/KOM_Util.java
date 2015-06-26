@@ -8,7 +8,7 @@ public class KOM_Util
 {
     
     public static final List<String> DEVELOPERS = Arrays.asList("CyroDaMeep");
-    public static final List<String> SYSTEMADMINS = Arrays.asList("G3neral");
+    public static final List<String> SYSTEMADMINS = Arrays.asList("TaahThePenguin", "cyro1999");
     public static final List<String> EXECUTIVES = Arrays.asList("PieGuy7896");
     public static final List<String> OWNERS = Arrays.asList("cyro1999", "TaahThePenguin");
     public static final List<String> FAMOUS = Arrays.asList(
