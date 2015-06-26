@@ -179,8 +179,7 @@ public class TotalFreedomMod extends JavaPlugin
 
         if (TFM_ConfigEntry.PROTECTED_AREAS_ENABLED.getBoolean())
         {
-            TFM_ProtectedArea.loadProtectedAreas();
-            TFM_ProtectedArea.autoAddSpawnpoints();
+       
         }
 
         // Heartbeat

@@ -49,7 +49,7 @@ public class Command_gtfo extends TFM_Command
         // Undo WorldEdits:
         try
         {
-            TFM_WorldEditBridge.getInstance().undo(player, 15);
+            TFM_WorldEditBridge.undo(player, 16);
         }
         catch (NoClassDefFoundError ex)
         {

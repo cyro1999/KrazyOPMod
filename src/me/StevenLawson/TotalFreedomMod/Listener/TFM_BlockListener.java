@@ -94,10 +94,7 @@ public class TFM_BlockListener implements Listener
         {
             if (!TFM_AdminList.isSuperAdmin(player))
             {
-                if (TFM_ProtectedArea.isInProtectedArea(blockLocation))
-                {
-                    event.setCancelled(true);
-                }
+
             }
         }
     }
@@ -164,11 +161,7 @@ public class TFM_BlockListener implements Listener
         {
             if (!TFM_AdminList.isSuperAdmin(player))
             {
-                if (TFM_ProtectedArea.isInProtectedArea(blockLocation))
-                {
-                    event.setCancelled(true);
-                    return;
-                }
+
             }
         }
 
