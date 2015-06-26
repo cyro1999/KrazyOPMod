@@ -35,6 +35,7 @@ public class Command_tfm extends TFM_Command
             TFM_PermbanList.load();
             TFM_PlayerList.getInstance().load();
             TFM_BanManager.getInstance().load();
+            TotalFreedomMod.plugin.komconfig.reloadConfig();
 
             TFM_CommandBlocker.getInstance().parseBlockingRules();
 
