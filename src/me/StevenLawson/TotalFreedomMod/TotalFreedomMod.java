@@ -1,5 +1,7 @@
 package me.StevenLawson.TotalFreedomMod;
 
+import com.Cyro1999.KrazyOPMod.Commands.KOM_CommandHandler;
+import com.Cyro1999.KrazyOPMod.Commands.KOM_CommandLoader;
 import com.Cyro1999.KrazyOPMod.Config.KOM_Config;
 import com.Cyro1999.KrazyOPMod.Listeners.KOM_ChatListener;
 import com.Cyro1999.KrazyOPMod.Listeners.KOM_PlayerListener;
@@ -38,7 +40,10 @@ public class TotalFreedomMod extends JavaPlugin
 {
         public static KOM_Config komconfig;
     public static FileConfiguration config;
-    
+   //
+    public static final String KOM_COMMAND_PATH = "com.Cyro1999.KrazyOPMod.Commands";
+    public static final String KOM_COMMAND_PREFIX = "Command_";
+    //
     public static final long HEARTBEAT_RATE = 5L; //Seconds
     public static final long SERVICE_CHECKER_RATE = 120L;
     //
@@ -117,6 +122,7 @@ public class TotalFreedomMod extends JavaPlugin
         // Permban list
         TFM_PermbanList.createBackup();
         TFM_PermbanList.load();
+        
 
         // Playerlist and bans
         TFM_PlayerList.getInstance().load();
@@ -204,6 +210,7 @@ public class TotalFreedomMod extends JavaPlugin
             {
                 TFM_CommandLoader.getInstance().scan();
                 TFM_CommandBlocker.getInstance().parseBlockingRules();
+                KOM_CommandLoader.getInstance().scan();
             }
         }.runTaskLater(plugin, 20L);
     }
@@ -222,7 +229,7 @@ public class TotalFreedomMod extends JavaPlugin
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
-        return TFM_CommandHandler.handleCommand(sender, cmd, commandLabel, args);
+        return KOM_CommandHandler.handleCommand(sender, cmd, commandLabel, args) && TFM_CommandHandler.handleCommand(sender, cmd, commandLabel, args);
     }
 
     private static void setAppProperties()
