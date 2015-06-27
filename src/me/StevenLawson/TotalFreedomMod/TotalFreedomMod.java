@@ -21,6 +21,7 @@ import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.HTTPD.TFM_HTTPD_Manager;
 import me.StevenLawson.TotalFreedomMod.Listener.*;
 import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
+import me.StevenLawson.TotalFreedomMod.World.TFM_BuilderWorld;
 import me.StevenLawson.TotalFreedomMod.World.TFM_Flatlands;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -155,6 +156,15 @@ public class TotalFreedomMod extends JavaPlugin
         catch (Exception ex)
         {
         }
+        
+        try
+        {
+            TFM_BuilderWorld.getInstance().getWorld();
+        }
+        catch (Exception ex)
+        {
+        }
+
 
         // Initialize game rules
         TFM_GameRuleHandler.setGameRule(TFM_GameRuleHandler.TFM_GameRule.DO_DAYLIGHT_CYCLE, !TFM_ConfigEntry.DISABLE_NIGHT.getBoolean(), false);
