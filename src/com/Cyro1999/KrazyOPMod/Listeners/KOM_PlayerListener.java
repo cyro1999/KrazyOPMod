@@ -57,10 +57,10 @@ public class KOM_PlayerListener implements Listener
             player.setPlayerListName(ChatColor.LIGHT_PURPLE + player.getName());
             TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin&8]");
         }
-        else if (KOM_Util.TELNET.contains(player.getName()))
+        else if (TFM_AdminList.isTelnetAdmin(player))
         {
             player.setPlayerListName(ChatColor.GREEN + player.getName());
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&2Telnet Admin&8]");
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&aTelnet Admin&8]");
         }
         else if (TFM_AdminList.isSuperAdmin(player))
         {
