@@ -59,7 +59,7 @@ public class KOM_CommandLoader
             commandMap.register(TotalFreedomMod.plugin.getDescription().getName(), dynamicCommand);
         }
 
-        TFM_Log.info("CJFM commands loaded.");
+        TFM_Log.info("KOM commands loaded.");
     }
 
     public void unregisterCommand(String commandName)
@@ -305,7 +305,7 @@ public class KOM_CommandLoader
             }
             catch (Throwable ex)
             {
-                throw new CommandException("Unhandled exception executing command '" + commandLabel + "' in plugin " + getPlugin().getDescription().getFullName(), ex);
+                
             }
 
             if (!success && getUsage().length() > 0)

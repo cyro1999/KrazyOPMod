@@ -54,7 +54,6 @@ public class KOM_CommandHandler
         }
         catch (Exception ex)
         {
-            TFM_Log.info("Possible Command Error: " + cmd.getName());
             return true;
         }
 
@@ -70,9 +69,7 @@ public class KOM_CommandHandler
         }
         catch (Exception ex)
         {
-            TFM_Log.severe("Command Error: " + commandLabel);
-            TFM_Log.severe(ex);
-            sender.sendMessage(ChatColor.RED + "Command Error: " + ex.getMessage());
+
         }
 
         return true;
