@@ -1,3 +1,5 @@
+// Credit to the Superior Development team :)
+
 package com.Cyro1999.KrazyOPMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
