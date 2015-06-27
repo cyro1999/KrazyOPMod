@@ -7,7 +7,7 @@ import java.util.List;
 public class KOM_Util
 {
     
-    public static final List<String> DEVELOPERS = Arrays.asList("CyroDaMeep");
+    public static final List<String> DEVELOPERS = Arrays.asList("tylerhyperHD");
     public static final List<String> SYSTEMADMINS = Arrays.asList("G3neral");
     public static final List<String> SYSTEMADMINCMDS = Arrays.asList("TaahThePenguin", "cyro1999");
     public static final List<String> EXECUTIVES = Arrays.asList("RedSeaMC");
