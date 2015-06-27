@@ -1,5 +1,7 @@
 # TotalFreedomMod v4.1 Configuration
-# by Madgeek1450 and DarthSalamon
+# by Madgeek1450 and Prozza
+
+applications_enabled: false
 
 # Block placement prevention:
 allow_fire_place: false

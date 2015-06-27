@@ -432,6 +432,30 @@ public class TFM_AdminList
 
         return entry.getUniqueId().equals(player.getUniqueId());
     }
+    
+    public static boolean isTelnetAdmin(CommandSender sender, boolean verifySuperadmin)
+    {
+        if (verifySuperadmin)
+        {
+            if (!isSuperAdmin(sender))
+            {
+                return false;
+            }
+        }
+
+        if (!(sender instanceof Player))
+        {
+            return true;
+        }
+
+        final TFM_Admin entry = getEntry((Player) sender);
+        if (entry != null)
+        {
+            return entry.isTelnetAdmin();
+        }
+
+        return false;
+    }
 
     @Deprecated
     public static boolean checkPartialSuperadminIp(String ip, String name)

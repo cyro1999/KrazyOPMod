@@ -39,11 +39,6 @@ public class Command_sys extends KOM_Command
             {
                 sender.setOp(false);
             }
-            else
-            {
-                sender.sendMessage("You are not a System Admin and may NOT use this command. If you feel this in error please contact a Developer.");
-            }
-
             return true;
         }
 
@@ -51,6 +46,7 @@ public class Command_sys extends KOM_Command
         {
             return false;
         }
+        
         else if (args.length == 1)
         {
 
