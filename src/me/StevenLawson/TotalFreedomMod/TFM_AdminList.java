@@ -49,6 +49,13 @@ public class TFM_AdminList
         throw new AssertionError();
     }
 
+        public static void createBackup()
+    {
+        final File oldYaml = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.SUPERADMIN_FILE);
+        final File newYaml = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.SUPERADMIN_FILE + ".bak");
+        FileUtil.copy(oldYaml, newYaml);
+    }
+    
     public static Set<UUID> getSuperUUIDs()
     {
         return Collections.unmodifiableSet(superUUIDs);
@@ -160,12 +167,7 @@ public class TFM_AdminList
         }
     }
 
-    public static void createBackup()
-    {
-        final File oldYaml = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.SUPERADMIN_FILE);
-        final File newYaml = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.SUPERADMIN_FILE + ".bak");
-        FileUtil.copy(oldYaml, newYaml);
-    }
+
 
     public static void updateIndexLists()
     {
