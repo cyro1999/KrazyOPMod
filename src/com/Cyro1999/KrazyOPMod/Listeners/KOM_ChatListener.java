@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.Cyro1999.KrazyOPMod.Listeners;
 
 import com.Cyro1999.KrazyOPMod.KOM_Messages;
@@ -13,10 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-/**
- *
- * @author Transport
- */
+
 public class KOM_ChatListener implements Listener
 {
       @EventHandler

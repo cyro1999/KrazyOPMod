@@ -1,5 +1,6 @@
 package com.Cyro1999.KrazyOPMod.Listeners;
 
+import com.Cyro1999.KrazyOPMod.KOM_Messages;
 import com.Cyro1999.KrazyOPMod.KOM_Util;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class KOM_PlayerListener implements Listener
@@ -64,6 +66,26 @@ public class KOM_PlayerListener implements Listener
         {
             player.setPlayerListName(ChatColor.AQUA + player.getName());
             TFM_PlayerData.getPlayerData(player).setTag("&8[&BSuper Admin&8]");
+        }
+    }
+    
+        @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
+    {
+        Player player = (Player) event;
+        
+        String command = event.getMessage().toLowerCase().trim();
+
+        if (command.contains("175:") || command.contains("double_plant:"))
+        {
+            event.setCancelled(true);
+            TFM_Util.bcastMsg(KOM_Messages.MODTAG + player.getName() + " just attempted to use the crash item! Deal with them appropriately please!", ChatColor.DARK_RED);
+        }
+
+        if (command.contains("&k") && !TFM_AdminList.isSuperAdmin(player))
+        {
+            event.setCancelled(true);
+            TFM_Util.playerMsg(player, KOM_Messages.MODTAG + ChatColor.RED + "You are not permitted to use &k!");
         }
     }
     
