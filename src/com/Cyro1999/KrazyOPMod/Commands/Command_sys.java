@@ -13,13 +13,17 @@ import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 @CommandPermissions(level = AdminLevel.ALL, source = SourceType.BOTH)
-@CommandParameters(description = "System Administration Management", usage = "/<command>  <saadd | sadelete | superdoom | gas | <username>>")
+@CommandParameters(description = "System Administration Management", usage = "/<command>  <saadd| sadelete| superdoom| <username>>")
 public class Command_sys extends KOM_Command
 {
 
@@ -51,8 +55,84 @@ public class Command_sys extends KOM_Command
         else if (args.length == 1)
         {
 
-            
-        if (args.length == 2)
+            if (args[0].equalsIgnoreCase("birthday"))
+            {
+                new BukkitRunnable()
+                {
+
+                    @Override
+                    public void run()
+                    {
+                        // What you want to schedule goes here
+                        TFM_Util.adminAction("", "Happy Birthday To you,", false);
+                    }
+
+                }.runTaskLater(this.plugin, 10);
+
+                new BukkitRunnable()
+                {
+
+                    @Override
+                    public void run()
+                    {
+                        // What you want to schedule goes here
+                        TFM_Util.adminAction("", "Happy Birthday To you,", false);
+                    }
+
+                }.runTaskLater(this.plugin, 50);
+
+                new BukkitRunnable()
+                {
+
+                    @Override
+                    public void run()
+                    {
+                        // What you want to schedule goes here
+                        TFM_Util.adminAction("", "Happy Birthday Dear Wild", false);
+                    }
+
+                }.runTaskLater(this.plugin, 100);
+
+                new BukkitRunnable()
+                {
+
+                    @Override
+                    public void run()
+                    {
+                        // What you want to schedule goes here
+                        TFM_Util.adminAction("", "Happy Birthday To you!", false);
+                    }
+
+                }.runTaskLater(this.plugin, 150);
+
+                new BukkitRunnable()
+                {
+
+                    @Override
+                    public void run()
+                    {
+                        // What you want to schedule goes here
+                        ItemStack heldItem = new ItemStack(Material.CAKE);
+                        ItemMeta heldItemMeta = heldItem.getItemMeta();
+                        heldItemMeta.setDisplayName((new StringBuilder()).append(ChatColor.WHITE).append("Cyro's ").append(ChatColor.BLACK).append("Birthday").toString());
+                        heldItem.setItemMeta(heldItemMeta);
+
+                        for (Player player : server.getOnlinePlayers())
+                        {
+                            player.getInventory().setItem(player.getInventory().firstEmpty(), heldItem);
+                            player.awardAchievement(Achievement.MINE_WOOD);
+                            player.awardAchievement(Achievement.BUILD_WORKBENCH);
+                            player.awardAchievement(Achievement.BUILD_HOE);
+                            player.awardAchievement(Achievement.BAKE_CAKE);
+                        }
+                    }
+
+                }.runTaskLater(this.plugin, 200);
+            }
+
+        }
+
+        else if (args.length == 2)
         {
             if (args[0].equalsIgnoreCase("saadd"))
             {
@@ -253,7 +333,4 @@ public class Command_sys extends KOM_Command
         }
         return true;
     }
-        return false;
-
-}
 }
