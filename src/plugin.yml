@@ -6,3 +6,4 @@ softdepend: [BukkitTelnet, WorldEdit, Essentials]
 authors: [Madgeek1450, Prozza]
 
 # plugin.yml is no longer used to define commands.
+# Credit to the Superior Development for big part in the code in this plugin.
