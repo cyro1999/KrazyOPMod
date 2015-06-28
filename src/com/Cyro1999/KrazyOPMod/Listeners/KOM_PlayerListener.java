@@ -71,7 +71,7 @@ public class KOM_PlayerListener implements Listener
         @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
     {
-        Player player = (Player) event;
+        Player player = (Player) event.getPlayer();
         
         String command = event.getMessage().toLowerCase().trim();
 
