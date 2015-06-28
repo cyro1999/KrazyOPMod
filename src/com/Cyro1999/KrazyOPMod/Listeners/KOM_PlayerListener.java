@@ -5,13 +5,17 @@ import com.Cyro1999.KrazyOPMod.KOM_Util;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 
 public class KOM_PlayerListener implements Listener
 {
@@ -19,7 +23,7 @@ public class KOM_PlayerListener implements Listener
     @EventHandler(priority = EventPriority.HIGH)
     public static void onPlayerJoinEvent(PlayerJoinEvent event)
     {
-
+             
         Player player = event.getPlayer();
 
         if (TFM_AdminList.isSuperAdmin(player) && !player.getName().equalsIgnoreCase("varuct"))
@@ -56,11 +60,6 @@ public class KOM_PlayerListener implements Listener
         {
             player.setPlayerListName(ChatColor.LIGHT_PURPLE + player.getName());
             TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin&8]");
-        }
-        else if (TFM_AdminList.isTelnetAdmin(player))
-        {
-            player.setPlayerListName(ChatColor.GREEN + player.getName());
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&aTelnet Admin&8]");
         }
         else if (TFM_AdminList.isSuperAdmin(player))
         {

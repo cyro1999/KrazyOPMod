@@ -1,7 +1,9 @@
 package com.Cyro1999.KrazyOPMod.Commands;
 
 import com.Cyro1999.KrazyOPMod.Bridge.KOM_DisguiseCraftBridge;
+import com.Cyro1999.KrazyOPMod.KOM_Messages;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,6 +18,7 @@ public class Command_uall extends KOM_Command
         TFM_Util.adminAction(sender.getName(), "Undisguising all players", true);
 
         KOM_DisguiseCraftBridge.undisguiseAllPlayers();
+         sender_p.sendMessage(KOM_Messages.MODTAG + ChatColor.GOLD + "You just undisguised every player online!");
 
         return true;
     }

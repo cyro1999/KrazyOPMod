@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandHandler;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandLoader;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
@@ -23,7 +24,10 @@ import me.StevenLawson.TotalFreedomMod.Listener.*;
 import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
 import me.StevenLawson.TotalFreedomMod.World.TFM_BuilderWorld;
 import me.StevenLawson.TotalFreedomMod.World.TFM_Flatlands;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -31,6 +35,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -50,7 +56,6 @@ public class TotalFreedomMod extends JavaPlugin
     //
     public static final String SUPERADMIN_FILE = "superadmin.yml";
     public static final String PERMBAN_FILE = "permban.yml";
-    public static final String PROTECTED_AREA_FILE = "protectedareas.dat";
     public static final String SAVED_FLAGS_FILE = "savedflags.dat";
     //
     public static final String MSG_NO_PERMS = ChatColor.YELLOW + "You do not have permission to use this command.";
@@ -92,6 +97,7 @@ public class TotalFreedomMod extends JavaPlugin
     @Override
     public void onEnable()
     {
+  
         // More YAML Setting Up and information.
         komconfig = new KOM_Config(plugin, "krazyconfig.yml");
         komconfig.saveDefaultConfig();
@@ -222,6 +228,8 @@ public class TotalFreedomMod extends JavaPlugin
                 KOM_CommandLoader.getInstance().scan();
             }
         }.runTaskLater(plugin, 20L);
+         
+    
     }
 
     @Override
