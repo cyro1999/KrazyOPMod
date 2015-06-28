@@ -36,6 +36,7 @@ bannedwords:
       - ass
       
 builders:
-    - redseamc
     - cyro1999
     - taahthepenguin
+    - redseamc
+    - camnop
