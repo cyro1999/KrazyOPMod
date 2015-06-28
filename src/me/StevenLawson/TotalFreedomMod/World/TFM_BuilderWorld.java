@@ -1,12 +1,13 @@
 package me.StevenLawson.TotalFreedomMod.World;
 
-import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
+import com.Cyro1999.KrazyOPMod.KOM_Util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_GameRuleHandler;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
@@ -199,7 +200,7 @@ public final class TFM_BuilderWorld extends TFM_CustomWorld
         Boolean cached = accessCache.get(player);
         if (cached == null)
         {
-            boolean canAccess = TFM_AdminList.isSuperAdmin(player);
+            boolean canAccess = KOM_Util.BUILDERS.contains(player.getName());
             if (!canAccess)
             {
                 Player supervisor = guestList.get(player);

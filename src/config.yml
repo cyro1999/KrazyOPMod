@@ -62,6 +62,7 @@ blocked_commands:
   - 'n:b:/pardon-ip:_'
   - 'n:b:/toggledownfall:_'
   - 'n:b:/effect:Please use /potion to set effects.'
+  - 'n:b:/tpo:Only admins can override teleportation!'
   - 'n:b:/enderchest:_'
 
   # Superadmin commands
