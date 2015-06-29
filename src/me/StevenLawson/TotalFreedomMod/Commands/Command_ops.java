@@ -44,7 +44,7 @@ public class Command_ops extends TFM_Command
         {
             if (!TFM_AdminList.isSuperAdmin(sender))
             {
-                playerMsg(TotalFreedomMod.MSG_NO_PERMS);
+                playerMsg(TFM_Command.MSG_NO_PERMS);
                 return true;
             }
 
@@ -55,7 +55,7 @@ public class Command_ops extends TFM_Command
                 player.setOp(false);
                 if (player.isOnline())
                 {
-                    playerMsg((Player) player, TotalFreedomMod.YOU_ARE_NOT_OP);
+                    playerMsg((Player) player, TFM_Command.YOU_ARE_NOT_OP);
                 }
             }
             return true;

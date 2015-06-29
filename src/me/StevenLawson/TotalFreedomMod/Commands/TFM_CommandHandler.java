@@ -63,7 +63,7 @@ public class TFM_CommandHandler
 
         if (!dispatcher.senderHasPermission())
         {
-            sender.sendMessage(TotalFreedomMod.MSG_NO_PERMS);
+            sender.sendMessage(TFM_Command.MSG_NO_PERMS);
             return true;
         }
 

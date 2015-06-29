@@ -395,9 +395,9 @@ public class TFM_PlayerListener implements Listener
             }
         }
 
-        if (TFM_Jumppads.getInstance().getMode().isOn())
+        if (TFM_Jumppads.getMode().isOn())
         {
-            TFM_Jumppads.getInstance().PlayerMoveEvent(event);
+            TFM_Jumppads.PlayerMoveEvent(event);
         }
 
         if (!(TFM_ConfigEntry.LANDMINES_ENABLED.getBoolean() && TFM_ConfigEntry.ALLOW_EXPLOSIONS.getBoolean()))

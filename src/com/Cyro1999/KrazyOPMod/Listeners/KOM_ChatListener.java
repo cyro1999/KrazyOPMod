@@ -13,11 +13,13 @@ public class KOM_ChatListener implements Listener
       @EventHandler
      public void onPlayerChat(AsyncPlayerChatEvent e) {
          for(String word : e.getMessage().split(" ")){
+             
+             
+             /* This needs major fixing
               if(TotalFreedomMod.plugin.config.getStringList("bannedwords").contains(word)){
               e.setCancelled(true);
-              e.getPlayer().sendMessage(KOM_Messages.MODTAG + ChatColor.DARK_RED + "The word " + word + " is banned!");           
+              e.getPlayer().sendMessage(KOM_Messages.MODTAG + ChatColor.DARK_RED + "The word " + word + " is banned!");      
+                     */
               }
          }
-    
-}
 }

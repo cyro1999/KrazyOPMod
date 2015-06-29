@@ -1,5 +1,6 @@
 package com.Cyro1999.KrazyOPMod.Commands;
 
+import me.StevenLawson.TotalFreedomMod.Commands.TFM_Command;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
@@ -24,7 +25,7 @@ public class Command_builderworld extends KOM_Command
     {
         if (!TotalFreedomMod.plugin.config.getStringList("builders").contains(sender.getName().toLowerCase()))
         {
-            playerMsg(TotalFreedomMod.MSG_NO_PERMS);
+            playerMsg(TFM_Command.MSG_NO_PERMS);
         }
         
         
@@ -226,7 +227,7 @@ public class Command_builderworld extends KOM_Command
     {
         if (!(sender instanceof Player) || sender_p == null || !TFM_AdminList.isSuperAdmin(sender))
         {
-            throw new PermissionDeniedException(TotalFreedomMod.MSG_NO_PERMS);
+            throw new PermissionDeniedException(TFM_Command.MSG_NO_PERMS);
         }
     }
 

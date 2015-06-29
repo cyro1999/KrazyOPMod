@@ -28,7 +28,7 @@ public class Command_permban extends TFM_Command
         {
             if (!senderIsConsole)
             {
-                sender.sendMessage(TotalFreedomMod.MSG_NO_PERMS);
+                sender.sendMessage(TFM_Command.MSG_NO_PERMS);
                 return true;
             }
             playerMsg("Reloading permban list...", ChatColor.RED);

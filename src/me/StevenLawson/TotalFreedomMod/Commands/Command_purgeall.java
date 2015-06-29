@@ -20,7 +20,6 @@ public class Command_purgeall extends TFM_Command
         // Purge entities
         TFM_Util.TFM_EntityWiper.wipeEntities(true, true);
 
-
         for (Player player : server.getOnlinePlayers())
         {
             TFM_PlayerData playerdata = TFM_PlayerData.getPlayerData(player);
@@ -70,17 +69,8 @@ public class Command_purgeall extends TFM_Command
             }
         }
 
-        // Clear auto-unmute and auto-unfreeze tasks
-        if (TotalFreedomMod.mutePurgeTask != null)
-        {
-            TotalFreedomMod.mutePurgeTask.cancel();
-        }
-
+        // Unfreeze all players
         TotalFreedomMod.allPlayersFrozen = false;
-        if (TotalFreedomMod.freezePurgeTask != null)
-        {
-            TotalFreedomMod.freezePurgeTask.cancel();
-        }
 
         // Remove all mobs
         Command_mp.purgeMobs();

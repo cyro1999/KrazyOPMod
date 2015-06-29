@@ -28,7 +28,7 @@ public class Command_onlinemode extends TFM_Command
 
             if (sender instanceof Player && !TFM_AdminList.isSeniorAdmin(sender, true))
             {
-                playerMsg(TotalFreedomMod.MSG_NO_PERMS);
+                playerMsg(TFM_Command.MSG_NO_PERMS);
                 return true;
             }
 

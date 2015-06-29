@@ -10,6 +10,5 @@ public @interface CommandPermissions
 
     SourceType source();
 
-    boolean block_Host_Console() default false;
+    boolean blockHostConsole() default false;
 }
-

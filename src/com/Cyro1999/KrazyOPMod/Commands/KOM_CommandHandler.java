@@ -2,6 +2,7 @@
 
 package com.Cyro1999.KrazyOPMod.Commands;
 
+import me.StevenLawson.TotalFreedomMod.Commands.TFM_Command;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import net.minecraft.util.org.apache.commons.lang3.StringUtils;
@@ -59,7 +60,7 @@ public class KOM_CommandHandler
 
         if (!dispatcher.senderHasPermission())
         {
-            sender.sendMessage(TotalFreedomMod.MSG_NO_PERMS);
+            sender.sendMessage(TFM_Command.MSG_NO_PERMS);
             return true;
         }
 

@@ -15,7 +15,7 @@ public class Command_opme extends TFM_Command
     {
         TFM_Util.adminAction(sender.getName(), "Opping " + sender.getName(), false);
         sender.setOp(true);
-        sender.sendMessage(TotalFreedomMod.YOU_ARE_OP);
+        sender.sendMessage(TFM_Command.YOU_ARE_OP);
 
         return true;
     }

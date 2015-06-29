@@ -84,13 +84,13 @@ public class Command_gadmin extends TFM_Command
                 {
                     TFM_Util.adminAction(sender.getName(), String.format("Opping %s.", player.getName()), false);
                     player.setOp(false);
-                    player.sendMessage(TotalFreedomMod.YOU_ARE_OP);
+                    player.sendMessage(TFM_Command.YOU_ARE_OP);
                 }
                 else if (mode.equals("deop"))
                 {
                     TFM_Util.adminAction(sender.getName(), String.format("Deopping %s.", player.getName()), false);
                     player.setOp(false);
-                    player.sendMessage(TotalFreedomMod.YOU_ARE_NOT_OP);
+                    player.sendMessage(TFM_Command.YOU_ARE_NOT_OP);
                 }
                 else if (mode.equals("ci"))
                 {
