@@ -1,9 +1,9 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
-import me.StevenLawson.TotalFreedomMod.TFM_ServerInterface;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Ban;
 import me.StevenLawson.TotalFreedomMod.TFM_BanManager;
+import me.StevenLawson.TotalFreedomMod.TFM_PlayerList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -25,14 +25,11 @@ public class Command_doom extends TFM_Command
             return false;
         }
 
-        final Player player;
-        try
+        final Player player = getPlayer(args[0]);
+
+        if (player == null)
         {
-            player = getPlayer(args[0]);
-        }
-        catch (PlayerNotFoundException ex)
-        {
-            sender.sendMessage(ex.getMessage());
+            sender.sendMessage(TFM_Command.PLAYER_NOT_FOUND);
             return true;
         }
 
@@ -54,11 +51,14 @@ public class Command_doom extends TFM_Command
         // deop
         player.setOp(false);
 
-        // ban IP
-        TFM_BanManager.getInstance().addIpBan(new TFM_Ban(ip, player.getName()));
+        // ban IPs
+        for (String playerIp : TFM_PlayerList.getEntry(player).getIps())
+        {
+            TFM_BanManager.addIpBan(new TFM_Ban(playerIp, player.getName()));
+        }
 
-        // ban name
-        TFM_BanManager.getInstance().addUuidBan(new TFM_Ban(player.getUniqueId(), player.getName()));
+        // ban uuid
+        TFM_BanManager.addUuidBan(player);
 
         // set gamemode to survival
         player.setGameMode(GameMode.SURVIVAL);

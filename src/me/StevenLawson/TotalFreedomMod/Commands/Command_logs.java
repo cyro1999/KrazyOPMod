@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TFM_Admin;
-import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import net.minecraft.util.org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
@@ -32,7 +31,7 @@ public class Command_logs extends TFM_Command
 
         if (args.length == 1)
         {
-            mode = (TFM_Util.isStopCommand(args[0]) ? LogsRegistrationMode.DELETE : LogsRegistrationMode.UPDATE);
+            mode = ("off".equals(args[0]) ? LogsRegistrationMode.DELETE : LogsRegistrationMode.UPDATE);
         }
 
         updateLogsRegistration(sender, sender_p, mode);
@@ -47,8 +46,8 @@ public class Command_logs extends TFM_Command
 
     public static void updateLogsRegistration(final CommandSender sender, final String targetName, final String targetIP, final LogsRegistrationMode mode)
     {
-        final String logsRegisterURL = TFM_ConfigEntry.LOGS_REGISTER_URL.getString();
-        final String logsRegisterPassword = TFM_ConfigEntry.LOGS_REGISTER_PASSWORD.getString();
+        final String logsRegisterURL = TFM_ConfigEntry.LOGS_URL.getString();
+        final String logsRegisterPassword = TFM_ConfigEntry.LOGS_SECRET.getString();
 
         if (logsRegisterURL == null || logsRegisterPassword == null || logsRegisterURL.isEmpty() || logsRegisterPassword.isEmpty())
         {

@@ -21,7 +21,7 @@ public class Command_cage extends TFM_Command
             return false;
         }
 
-        if (TFM_Util.isStopCommand(args[0]) && sender instanceof Player)
+        if ("off".equals(args[0]) && sender instanceof Player)
         {
             TFM_Util.adminAction(sender.getName(), "Uncaging " + sender.getName(), true);
             TFM_PlayerData playerdata = TFM_PlayerData.getPlayerData(sender_p);
@@ -32,9 +32,9 @@ public class Command_cage extends TFM_Command
 
             return true;
         }
-        else if ("purge".equalsIgnoreCase(args[0]))
+        else if ("purge".equals(args[0]))
         {
-            TFM_Util.adminAction(sender.getName(), "Uncaging all players.", true);
+            TFM_Util.adminAction(sender.getName(), "Uncaging all players", true);
 
             for (Player player : server.getOnlinePlayers())
             {
@@ -47,14 +47,11 @@ public class Command_cage extends TFM_Command
             return true;
         }
 
-        Player player;
-        try
+        final Player player = getPlayer(args[0]);
+
+        if (player == null)
         {
-            player = getPlayer(args[0]);
-        }
-        catch (PlayerNotFoundException ex)
-        {
-            sender.sendMessage(ex.getMessage());
+            sender.sendMessage(TFM_Command.PLAYER_NOT_FOUND);
             return true;
         }
 
@@ -65,7 +62,7 @@ public class Command_cage extends TFM_Command
 
         if (args.length >= 2)
         {
-            if (TFM_Util.isStopCommand(args[1]))
+            if ("off".equals(args[1]))
             {
                 TFM_Util.adminAction(sender.getName(), "Uncaging " + player.getName(), true);
 

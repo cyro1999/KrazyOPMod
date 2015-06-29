@@ -2,7 +2,6 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_CommandBlocker;
 import net.minecraft.util.org.apache.commons.lang3.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,20 +18,17 @@ public class Command_gcmd extends TFM_Command
             return false;
         }
 
-        Player player;
-        try
+        final Player player = getPlayer(args[0]);
+
+        if (player == null)
         {
-            player = getPlayer(args[0]);
-        }
-        catch (PlayerNotFoundException ex)
-        {
-            sender.sendMessage(ex.getMessage());
+            sender.sendMessage(TFM_Command.PLAYER_NOT_FOUND);
             return true;
         }
 
         final String outCommand = StringUtils.join(args, " ", 1, args.length);
 
-        if (TFM_CommandBlocker.getInstance().isCommandBlocked(outCommand, sender))
+        if (TFM_CommandBlocker.isCommandBlocked(outCommand, sender))
         {
             return true;
         }

@@ -17,13 +17,12 @@ public class Command_cartsit extends TFM_Command
 
         if (args.length == 1)
         {
-            try
+
+            targetPlayer = getPlayer(args[0]);
+
+            if (targetPlayer == null)
             {
-                targetPlayer = getPlayer(args[0]);
-            }
-            catch (PlayerNotFoundException ex)
-            {
-                sender.sendMessage(ex.getMessage());
+                sender.sendMessage(TFM_Command.PLAYER_NOT_FOUND);
                 return true;
             }
         }

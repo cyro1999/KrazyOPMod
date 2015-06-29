@@ -3,9 +3,12 @@ package me.StevenLawson.TotalFreedomMod;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-import org.apache.commons.lang.StringUtils;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_MainConfig;
+import net.minecraft.util.org.apache.commons.lang3.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class TFM_Admin
@@ -44,6 +47,11 @@ public class TFM_Admin
         this.isTelnetAdmin = section.getBoolean("is_telnet_admin", false);
         this.consoleAliases = section.getStringList("console_aliases");
         this.isActivated = section.getBoolean("is_activated", true);
+
+        for (Iterator<?> it = TFM_MainConfig.getList(TFM_ConfigEntry.NOADMIN_IPS).iterator(); it.hasNext();)
+        {
+            ips.remove((String) it.next());
+        }
     }
 
     @Override
@@ -90,6 +98,27 @@ public class TFM_Admin
         {
             ips.add(ip);
         }
+    }
+
+    public void addIps(List<String> ips)
+    {
+        for (String ip : ips)
+        {
+            addIp(ip);
+        }
+    }
+
+    public void removeIp(String ip)
+    {
+        if (ips.contains(ip))
+        {
+            ips.remove(ip);
+        }
+    }
+
+    public void clearIPs()
+    {
+        ips.clear();
     }
 
     public Date getLastLogin()

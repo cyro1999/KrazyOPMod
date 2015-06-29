@@ -35,6 +35,7 @@ public class TFM_PlayerListener implements Listener
 {
     private static final List<String> BLOCKED_MUTED_CMDS = Arrays.asList(StringUtils.split("say,me,msg,m,tell,r,reply,mail,email", ","));
     private static final int MSG_PER_HEARTBEAT = 10;
+    public static final int DEFAULT_PORT = 25565;
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerInteract(PlayerInteractEvent event)
@@ -607,7 +608,7 @@ public class TFM_PlayerListener implements Listener
             }
         }
 
-        if (TFM_ConfigEntry.PREPROCESS_LOG_ENABLED.getBoolean())
+        if (TFM_ConfigEntry.ENABLE_PREPROCESS_LOG.getBoolean())
         {
             TFM_Log.info(String.format("[PREPROCESS_COMMAND] %s(%s): %s", player.getName(), ChatColor.stripColor(player.getDisplayName()), command), true);
         }
@@ -615,7 +616,7 @@ public class TFM_PlayerListener implements Listener
         command = command.toLowerCase().trim();
 
         // Blocked commands
-        if (TFM_CommandBlocker.getInstance().isCommandBlocked(command, event.getPlayer()))
+        if (TFM_CommandBlocker.isCommandBlocked(command, event.getPlayer()))
         {
             // CommandBlocker handles messages and broadcasts
             event.setCancelled(true);
@@ -693,42 +694,45 @@ public class TFM_PlayerListener implements Listener
     {
         final Player player = event.getPlayer();
         final String ip = TFM_Util.getIp(player);
+        final TFM_Player playerEntry;
+
         TFM_Log.info("[JOIN] " + TFM_Util.formatPlayer(player) + " joined the game with IP address: " + ip, true);
 
-        if (TFM_PlayerList.getInstance().existsEntry(player))
+        // Handle PlayerList entry (persistent)
+        if (TFM_PlayerList.existsEntry(player))
         {
-            final TFM_PlayerEntry entry = TFM_PlayerList.getInstance().getEntry(player);
-            entry.setLastJoinUnix(TFM_Util.getUnixTime());
-            entry.setLastJoinName(player.getName());
-            entry.save();
+            playerEntry = TFM_PlayerList.getEntry(player);
+            playerEntry.setLastLoginUnix(TFM_Util.getUnixTime());
+            playerEntry.setLastLoginName(player.getName());
+            playerEntry.addIp(ip);
+            playerEntry.save();
         }
         else
         {
+            playerEntry = TFM_PlayerList.getEntry(player);
             TFM_Log.info("Added new player: " + TFM_Util.formatPlayer(player));
         }
 
+        // GGenerate PlayerData (non-persistent)
         final TFM_PlayerData playerdata = TFM_PlayerData.getPlayerData(player);
         playerdata.setSuperadminIdVerified(false);
 
-        // Verify strict IP match
         if (TFM_AdminList.isSuperAdmin(player))
         {
-            if (TFM_BanManager.getInstance().isIpBanned(ip))
+            for (String storedIp : playerEntry.getIps())
             {
-                TFM_BanManager.getInstance().unbanIp(ip);
+                TFM_BanManager.unbanIp(storedIp);
+                TFM_BanManager.unbanIp(TFM_Util.getFuzzyIp(storedIp));
             }
 
-            if (TFM_BanManager.getInstance().isUuidBanned(player.getUniqueId()))
-            {
-                TFM_BanManager.getInstance().unbanUuid(player.getUniqueId());
-            }
+            TFM_BanManager.unbanUuid(TFM_UuidManager.getUniqueId(player));
 
             player.setOp(true);
 
+            // Verify strict IP match
             if (!TFM_AdminList.isIdentityMatched(player))
             {
                 playerdata.setSuperadminIdVerified(false);
-
                 TFM_Util.bcastMsg("Warning: " + player.getName() + " is an admin, but is using an account not registered to one of their ip-list.", ChatColor.RED);
             }
             else
@@ -773,6 +777,23 @@ public class TFM_PlayerListener implements Listener
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerLogin(PlayerLoginEvent event)
     {
+        if (TFM_ConfigEntry.FORCE_IP_ENABLED.getBoolean())
+        {
+            final String hostname = event.getHostname();
+            final String connectAddress = TFM_ConfigEntry.SERVER_ADDRESS.getString();
+            final int connectPort = TotalFreedomMod.server.getPort();
+
+            if (!hostname.equalsIgnoreCase(connectAddress + ":" + connectPort) && !hostname.equalsIgnoreCase(connectAddress + ".:" + connectPort))
+            {
+                final int forceIpPort = TFM_ConfigEntry.FORCE_IP_PORT.getInteger();
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
+                        TFM_ConfigEntry.FORCE_IP_KICKMSG.getString()
+                        .replace("%address%", TFM_ConfigEntry.SERVER_ADDRESS.getString() + (forceIpPort == DEFAULT_PORT ? "" : ":" + forceIpPort)));
+                return;
+            }
+
+        }
+
         TFM_ServerInterface.handlePlayerLogin(event);
     }
 }

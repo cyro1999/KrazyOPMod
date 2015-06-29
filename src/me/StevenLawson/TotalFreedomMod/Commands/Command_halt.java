@@ -63,7 +63,7 @@ public class Command_halt extends TFM_Command
                 {
                     if (count == 0)
                     {
-                        playerMsg(sender, "Halted players:");
+                        playerMsg("Halted players:");
                     }
                     playerMsg("- " + hp.getName());
                     count++;
@@ -76,17 +76,13 @@ public class Command_halt extends TFM_Command
             return true;
         }
 
-        Player player;
-        try
+        final Player player = getPlayer(args[0]);
+
+        if (player == null)
         {
-            player = getPlayer(args[0]);
-        }
-        catch (PlayerNotFoundException ex)
-        {
-            sender.sendMessage(ex.getMessage());
+            sender.sendMessage(TFM_Command.PLAYER_NOT_FOUND);
             return true;
         }
-
 
         TFM_PlayerData playerdata = TFM_PlayerData.getPlayerData(player);
         if (!playerdata.isHalted())

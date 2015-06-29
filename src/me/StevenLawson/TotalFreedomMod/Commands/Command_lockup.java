@@ -46,14 +46,11 @@ public class Command_lockup extends TFM_Command
         {
             if (args[1].equalsIgnoreCase("on"))
             {
-                final Player player;
-                try
+                final Player player = getPlayer(args[0]);
+
+                if (player == null)
                 {
-                    player = getPlayer(args[0]);
-                }
-                catch (PlayerNotFoundException ex)
-                {
-                    sender.sendMessage(ex.getMessage());
+                    sender.sendMessage(TFM_Command.PLAYER_NOT_FOUND);
                     return true;
                 }
 
@@ -61,16 +58,13 @@ public class Command_lockup extends TFM_Command
                 startLockup(player);
                 playerMsg("Locked up " + player.getName() + ".");
             }
-            else if (TFM_Util.isStopCommand(args[1]))
+            else if ("off".equals(args[1]))
             {
-                final Player player;
-                try
+                final Player player = getPlayer(args[0]);
+
+                if (player == null)
                 {
-                    player = getPlayer(args[0]);
-                }
-                catch (PlayerNotFoundException ex)
-                {
-                    sender.sendMessage(ex.getMessage());
+                    sender.sendMessage(TFM_Command.PLAYER_NOT_FOUND);
                     return true;
                 }
 

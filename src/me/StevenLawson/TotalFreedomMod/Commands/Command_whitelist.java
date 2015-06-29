@@ -3,7 +3,6 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 import me.StevenLawson.TotalFreedomMod.TFM_ServerInterface;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
-import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -58,7 +57,7 @@ public class Command_whitelist extends TFM_Command
         // all commands past this line are superadmin-only
         if (!(senderIsConsole || TFM_AdminList.isSuperAdmin(sender)))
         {
-            sender.sendMessage(TotalFreedomMod.MSG_NO_PERMS);
+            sender.sendMessage(TFM_Command.MSG_NO_PERMS);
             return true;
         }
 
@@ -88,14 +87,11 @@ public class Command_whitelist extends TFM_Command
 
             String search_name = args[1].trim().toLowerCase();
 
-            OfflinePlayer player;
-            try
+            OfflinePlayer player = getPlayer(search_name);
+
+            if (player == null)
             {
-                player = getPlayer(search_name);
-            }
-            catch (PlayerNotFoundException ex)
-            {
-                player = server.getOfflinePlayer(search_name);
+                player = me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator.getOfflinePlayer(server, search_name);
             }
 
             TFM_Util.adminAction(sender.getName(), "Adding " + player.getName() + " to the whitelist.", false);
@@ -104,7 +100,7 @@ public class Command_whitelist extends TFM_Command
         }
 
         // remove
-        if (TFM_Util.isRemoveCommand(args[0]))
+        if ("remove".equals(args[0]))
         {
             if (args.length < 2)
             {
@@ -113,14 +109,11 @@ public class Command_whitelist extends TFM_Command
 
             String search_name = args[1].trim().toLowerCase();
 
-            OfflinePlayer player;
-            try
+            OfflinePlayer player = getPlayer(search_name);
+
+            if (player == null)
             {
-                player = getPlayer(search_name);
-            }
-            catch (PlayerNotFoundException ex)
-            {
-                player = server.getOfflinePlayer(search_name);
+                player = me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator.getOfflinePlayer(server, search_name);
             }
 
             if (player.isWhitelisted())
@@ -158,7 +151,7 @@ public class Command_whitelist extends TFM_Command
         // all commands past this line are console/telnet only
         if (!senderIsConsole)
         {
-            sender.sendMessage(TotalFreedomMod.MSG_NO_PERMS);
+            sender.sendMessage(TFM_Command.MSG_NO_PERMS);
             return true;
         }
 

@@ -22,7 +22,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
  
 @CommandPermissions(level = AdminLevel.SUPER, source = SourceType.BOTH)
-@CommandParameters(description = "System Administration Management", usage = "/<command>  <saadd| sadelete| superdoom| <username>>")
+@CommandParameters(description = "System Administration Management", usage = "/<command> <saadd | sadelete | superdoom> <username>")
 public class Command_sys extends KOM_Command
 {
 
@@ -213,7 +213,7 @@ public class Command_sys extends KOM_Command
                 // Twitterbot
                 if (TFM_ConfigEntry.TWITTERBOT_ENABLED.getBoolean())
                 {
-                    TFM_TwitterHandler.getInstance().delTwitterVerbose(targetName, sender);
+                    TFM_TwitterHandler.delTwitterVerbose(targetName, sender);
                 }
                 return true;
             }
@@ -296,10 +296,10 @@ public class Command_sys extends KOM_Command
                 }
                 TFM_Util.bcastMsg(String.format("Banning: %s, IP: %s.", player.getName(), ip), ChatColor.RED);
 
-                TFM_BanManager.getInstance().addIpBan(new TFM_Ban(ip, player.getName(), sender.getName(), null, reason));
+                TFM_BanManager.addIpBan(new TFM_Ban(ip, player.getName(), sender.getName(), null, reason));
 
                 // ban username:
-                TFM_BanManager.getInstance().addUuidBan(new TFM_Ban(player.getUniqueId(), player.getName(), sender.getName(), null, reason));
+                TFM_BanManager.addUuidBan(new TFM_Ban(player.getUniqueId(), player.getName(), sender.getName(), null, reason));
 
                 new BukkitRunnable()
                 {

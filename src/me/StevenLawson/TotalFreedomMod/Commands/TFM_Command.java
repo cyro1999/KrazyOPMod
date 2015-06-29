@@ -1,6 +1,5 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
-import java.util.List;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
@@ -33,7 +32,7 @@ public abstract class TFM_Command
     public void setup(final TotalFreedomMod plugin, final CommandSender commandSender, final Class<?> commandClass)
     {
         this.plugin = plugin;
-        this.server = this.plugin.getServer();
+        this.server = plugin.getServer();
         this.commandSender = commandSender;
         this.commandClass = commandClass;
     }
@@ -139,23 +138,52 @@ public abstract class TFM_Command
         return true;
     }
 
-    public Player getPlayer(final String partialname) throws PlayerNotFoundException
+    public Player getPlayer(final String partialName)
     {
-        List<Player> matches = server.matchPlayer(partialname);
-        if (matches.isEmpty())
+        return getPlayer(partialName, false);
+    }
+
+    public Player getPlayer(final String partialName, final boolean exact)
+    {
+        if (partialName == null || partialName.isEmpty())
         {
-            for (Player player : server.getOnlinePlayers())
+            return null;
+        }
+
+        final Player[] players = server.getOnlinePlayers();
+
+        // Check exact matches first.
+        for (final Player player : players)
+        {
+            if (partialName.equalsIgnoreCase(player.getName()))
             {
-                if (player.getDisplayName().toLowerCase().contains(partialname.toLowerCase()))
-                {
-                    return player;
-                }
+                return player;
             }
-            throw new PlayerNotFoundException(partialname);
         }
-        else
+
+        if (exact)
         {
-            return matches.get(0);
+            return null;
         }
+
+        // Then check partial matches in name.
+        for (final Player player : players)
+        {
+            if (player.getName().toLowerCase().contains(partialName.toLowerCase()))
+            {
+                return player;
+            }
+        }
+
+        // Then check partial matches in display name.
+        for (final Player player : players)
+        {
+            if (player.getDisplayName().toLowerCase().contains(partialName.toLowerCase()))
+            {
+                return player;
+            }
+        }
+
+        return null;
     }
 }

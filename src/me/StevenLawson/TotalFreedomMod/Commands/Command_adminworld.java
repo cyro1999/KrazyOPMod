@@ -3,7 +3,6 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
-import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,7 +14,7 @@ public class Command_adminworld extends TFM_Command
 {
     private enum CommandMode
     {
-        TELEPORT, GUEST, TIME, WEATHER
+        TELEPORT, GUEST, TIME, WEATHER;
     }
 
     @Override
@@ -113,18 +112,15 @@ public class Command_adminworld extends TFM_Command
 
                         if ("add".equalsIgnoreCase(args[1]))
                         {
-                            Player player;
-                            try
+                            final Player player = getPlayer(args[2]);
+
+                            if (player == null)
                             {
-                                player = getPlayer(args[2]);
-                            }
-                            catch (PlayerNotFoundException ex)
-                            {
-                                sender.sendMessage(ex.getMessage());
+                                sender.sendMessage(TFM_Command.PLAYER_NOT_FOUND);
                                 return true;
                             }
 
-                            if (player != null && TFM_AdminWorld.getInstance().addGuest(player, sender_p))
+                            if (TFM_AdminWorld.getInstance().addGuest(player, sender_p))
                             {
                                 TFM_Util.adminAction(sender.getName(), "AdminWorld guest added: " + player.getName(), false);
                             }
@@ -133,9 +129,9 @@ public class Command_adminworld extends TFM_Command
                                 playerMsg("Could not add player to guest list.");
                             }
                         }
-                        else if (TFM_Util.isRemoveCommand(args[1]))
+                        else if ("remove".equals(args[1]))
                         {
-                            Player player = TFM_AdminWorld.getInstance().removeGuest(args[2]);
+                            final Player player = TFM_AdminWorld.getInstance().removeGuest(args[2]);
                             if (player != null)
                             {
                                 TFM_Util.adminAction(sender.getName(), "AdminWorld guest removed: " + player.getName(), false);
@@ -219,13 +215,15 @@ public class Command_adminworld extends TFM_Command
     {
         if (!(sender instanceof Player) || sender_p == null || !TFM_AdminList.isSuperAdmin(sender))
         {
-            throw new PermissionDeniedException(TotalFreedomMod.MSG_NO_PERMS);
+            throw new PermissionDeniedException(TFM_Command.MSG_NO_PERMS);
         }
     }
 
     private class PermissionDeniedException extends Exception
     {
-        public PermissionDeniedException(String string)
+        private static final long serialVersionUID = 1L;
+
+        private PermissionDeniedException(String string)
         {
             super(string);
         }

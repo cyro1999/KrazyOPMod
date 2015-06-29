@@ -4,11 +4,11 @@ import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.TFM_GameRuleHandler;
 import me.StevenLawson.TotalFreedomMod.TFM_GameRuleHandler.TFM_GameRule;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
+import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 
 @CommandPermissions(level = AdminLevel.SUPER, source = SourceType.BOTH)
 @CommandParameters(description = "Toggles TotalFreedomMod settings", usage = "/<command> [option] [value] [value]")
@@ -27,11 +27,11 @@ public class Command_toggle extends TFM_Command
             playerMsg("- lavadmg");
             playerMsg("- firespread");
             playerMsg("- prelog");
+            playerMsg("- lockdown");
             playerMsg("- petprotect");
             playerMsg("- droptoggle");
             playerMsg("- nonuke");
             playerMsg("- explosives");
-            playerMsg("- disguisecraft");
             return false;
         }
 
@@ -55,7 +55,7 @@ public class Command_toggle extends TFM_Command
 
         if (args[0].equals("fluidspread"))
         {
-            toggle("Fire placement is", TFM_ConfigEntry.ALLOW_FLUID_SPREAD);
+            toggle("Fluid spread is", TFM_ConfigEntry.ALLOW_FLUID_SPREAD);
             return true;
         }
 
@@ -67,20 +67,27 @@ public class Command_toggle extends TFM_Command
 
         if (args[0].equals("firespread"))
         {
-            TFM_GameRuleHandler.setGameRule(TFM_GameRule.DO_FIRE_TICK, TFM_ConfigEntry.ALLOW_FIRE_SPREAD.getBoolean());
             toggle("Fire spread is", TFM_ConfigEntry.ALLOW_FIRE_SPREAD);
+            TFM_GameRuleHandler.setGameRule(TFM_GameRule.DO_FIRE_TICK, TFM_ConfigEntry.ALLOW_FIRE_SPREAD.getBoolean());
             return true;
         }
 
         if (args[0].equals("prelog"))
         {
-            toggle("Command prelogging is", TFM_ConfigEntry.PREPROCESS_LOG_ENABLED);
+            toggle("Command prelogging is", TFM_ConfigEntry.ENABLE_PREPROCESS_LOG);
+            return true;
+        }
+
+        if (args[0].equals("lockdown"))
+        {
+            TFM_Util.adminAction(sender.getName(), (TotalFreedomMod.lockdownEnabled ? "De-a" : "A") + "ctivating server lockdown", true);
+            TotalFreedomMod.lockdownEnabled = !TotalFreedomMod.lockdownEnabled;
             return true;
         }
 
         if (args[0].equals("petprotect"))
         {
-            toggle("Tamed pet protection is", TFM_ConfigEntry.PET_PROTECT_ENABLED);
+            toggle("Tamed pet protection is", TFM_ConfigEntry.ENABLE_PET_PROTECT);
             return true;
         }
 
@@ -114,9 +121,9 @@ public class Command_toggle extends TFM_Command
                 }
             }
 
-            toggle("Nuke monitor is", TFM_ConfigEntry.NUKE_MONITOR);
+            toggle("Nuke monitor is", TFM_ConfigEntry.NUKE_MONITOR_ENABLED);
 
-            if (TFM_ConfigEntry.NUKE_MONITOR.getBoolean())
+            if (TFM_ConfigEntry.NUKE_MONITOR_ENABLED.getBoolean())
             {
                 playerMsg("Anti-freecam range is set to " + TFM_ConfigEntry.NUKE_MONITOR_RANGE.getDouble() + " blocks.");
                 playerMsg("Block throttle rate is set to " + TFM_ConfigEntry.NUKE_MONITOR_COUNT_BREAK.getInteger() + " blocks destroyed per 5 seconds.");
@@ -134,11 +141,10 @@ public class Command_toggle extends TFM_Command
                 }
                 catch (NumberFormatException ex)
                 {
-                    TFM_Util.playerMsg(sender, ex.getMessage());
+                    playerMsg(ex.getMessage());
                     return true;
                 }
             }
-
 
             toggle("Explosions are", TFM_ConfigEntry.ALLOW_EXPLOSIONS);
 
@@ -149,36 +155,11 @@ public class Command_toggle extends TFM_Command
             return true;
         }
 
-        if (args[0].equals("disguisecraft"))
-        {
-            final Plugin disguiseCraft = server.getPluginManager().getPlugin("DisguiseCraft");
-            if (disguiseCraft == null)
-            {
-                playerMsg("DisguiseCraft is not installed on this server.");
-                return true;
-            }
-
-            boolean enabled = disguiseCraft.isEnabled();
-            TFM_Util.adminAction(sender.getName(), (enabled ? "disa" : "ena") + "bling DisguiseCraft", true);
-
-
-            if (enabled)
-            {
-                plugin.getServer().getPluginManager().disablePlugin(disguiseCraft);
-            }
-            else
-            {
-                plugin.getServer().getPluginManager().enablePlugin(disguiseCraft);
-            }
-            return true;
-        }
-
         return false;
     }
 
     private void toggle(String name, TFM_ConfigEntry entry)
     {
-        entry.setBoolean(!entry.getBoolean());
         playerMsg(name + " now " + (entry.setBoolean(!entry.getBoolean()) ? "enabled." : "disabled."));
     }
 }

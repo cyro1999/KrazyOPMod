@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_Config;
 import net.minecraft.util.org.apache.commons.io.FileUtils;
 
 import net.minecraft.util.org.apache.commons.lang3.StringUtils;
@@ -40,6 +41,7 @@ import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.FileUtil;
 
 public class TFM_Util
 {
@@ -143,12 +145,14 @@ public class TFM_Util
 
     public static String getIp(OfflinePlayer player)
     {
-        if (player instanceof Player)
+        if (player.isOnline())
         {
-            return ((Player) player).getAddress().getAddress().getHostAddress().trim();
+            return player.getPlayer().getAddress().getAddress().getHostAddress().trim();
         }
 
-        final TFM_PlayerEntry entry = TFM_PlayerList.getInstance().getEntry(player.getUniqueId());
+        final UUID uuid = TFM_UuidManager.getUniqueId(player);
+
+        final TFM_Player entry = TFM_PlayerList.getEntry(uuid);
 
         if (entry == null)
         {
@@ -157,6 +161,7 @@ public class TFM_Util
 
         return entry.getIps().get(0);
     }
+
 
     public static String formatLocation(Location location)
     {
@@ -466,8 +471,8 @@ public class TFM_Util
 
                 TFM_Util.bcastMsg(ChatColor.RED + player.getName() + " has been banned for 1 minute.");
 
-                TFM_BanManager.getInstance().addIpBan(new TFM_Ban(ip, player.getName(), "AutoEject", expires, kickMessage));
-                TFM_BanManager.getInstance().addUuidBan(new TFM_Ban(player.getUniqueId(), player.getName(), "AutoEject", expires, kickMessage));
+                TFM_BanManager.addIpBan(new TFM_Ban(ip, player.getName(), "AutoEject", expires, kickMessage));
+                TFM_BanManager.addUuidBan(new TFM_Ban(player.getUniqueId(), player.getName(), "AutoEject", expires, kickMessage));
 
                 player.kickPlayer(kickMessage);
 
@@ -481,8 +486,8 @@ public class TFM_Util
 
                 TFM_Util.bcastMsg(ChatColor.RED + player.getName() + " has been banned for 3 minutes.");
 
-                TFM_BanManager.getInstance().addIpBan(new TFM_Ban(ip, player.getName(), "AutoEject", expires, kickMessage));
-                TFM_BanManager.getInstance().addUuidBan(new TFM_Ban(player.getUniqueId(), player.getName(), "AutoEject", expires, kickMessage));
+                TFM_BanManager.addIpBan(new TFM_Ban(ip, player.getName(), "AutoEject", expires, kickMessage));
+                TFM_BanManager.addUuidBan(new TFM_Ban(player.getUniqueId(), player.getName(), "AutoEject", expires, kickMessage));
 
                 player.kickPlayer(kickMessage);
                 break;
@@ -491,9 +496,9 @@ public class TFM_Util
             {
                 String[] ipAddressParts = ip.split("\\.");
 
-                TFM_BanManager.getInstance().addIpBan(new TFM_Ban(ip, player.getName(), "AutoEject", null, kickMessage));
-                TFM_BanManager.getInstance().addIpBan(new TFM_Ban(ipAddressParts[0] + "." + ipAddressParts[1] + ".*.*", player.getName(), "AutoEject", null, kickMessage));
-                TFM_BanManager.getInstance().addUuidBan(new TFM_Ban(player.getUniqueId(), player.getName(), "AutoEject", null, kickMessage));
+                TFM_BanManager.addIpBan(new TFM_Ban(ip, player.getName(), "AutoEject", null, kickMessage));
+                TFM_BanManager.addIpBan(new TFM_Ban(ipAddressParts[0] + "." + ipAddressParts[1] + ".*.*", player.getName(), "AutoEject", null, kickMessage));
+                TFM_BanManager.addUuidBan(new TFM_Ban(player.getUniqueId(), player.getName(), "AutoEject", null, kickMessage));
 
                 TFM_Util.bcastMsg(ChatColor.RED + player.getName() + " has been banned.");
 
@@ -623,7 +628,7 @@ public class TFM_Util
     {
         Map<String, Boolean> flags = null;
 
-        File input = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.SAVED_FLAGS_FILE);
+        File input = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.SAVED_FLAGS_FILENAME);
         if (input.exists())
         {
             try
@@ -666,6 +671,76 @@ public class TFM_Util
             throw new Exception();
         }
     }
+    
+    
+    public static void createBackups(String file)
+    {
+        createBackups(file, false);
+    }
+
+    public static void createBackups(String file, boolean onlyWeekly)
+    {
+        final String save = file.split("\\.")[0];
+        final TFM_Config config = new TFM_Config(TotalFreedomMod.plugin, "backup/backup.yml", false);
+        config.load();
+
+        // Weekly
+        if (!config.isInt(save + ".weekly"))
+        {
+            performBackup(file, "weekly");
+            config.set(save + ".weekly", TFM_Util.getUnixTime());
+        }
+        else
+        {
+            int lastBackupWeekly = config.getInt(save + ".weekly");
+
+            if (lastBackupWeekly + 3600 * 24 * 7 < TFM_Util.getUnixTime())
+            {
+                performBackup(file, "weekly");
+                config.set(save + ".weekly", TFM_Util.getUnixTime());
+            }
+        }
+
+        if (onlyWeekly)
+        {
+            config.save();
+            return;
+        }
+
+        // Daily
+        if (!config.isInt(save + ".daily"))
+        {
+            performBackup(file, "daily");
+            config.set(save + ".daily", TFM_Util.getUnixTime());
+        }
+        else
+        {
+            int lastBackupDaily = config.getInt(save + ".daily");
+
+            if (lastBackupDaily + 3600 * 24 < TFM_Util.getUnixTime())
+            {
+                performBackup(file, "daily");
+                config.set(save + ".daily", TFM_Util.getUnixTime());
+            }
+        }
+
+        config.save();
+    }
+
+    private static void performBackup(String file, String type)
+    {
+        TFM_Log.info("Backing up " + file + " to " + file + "." + type + ".bak");
+        final File backupFolder = new File(TotalFreedomMod.plugin.getDataFolder(), "backup");
+
+        if (!backupFolder.exists())
+        {
+            backupFolder.mkdirs();
+        }
+
+        final File oldYaml = new File(TotalFreedomMod.plugin.getDataFolder(), file);
+        final File newYaml = new File(backupFolder, file + "." + type + ".bak");
+        FileUtil.copy(oldYaml, newYaml);
+    }
 
     public static void setSavedFlag(String flag, boolean value)
     {
@@ -680,7 +755,7 @@ public class TFM_Util
 
         try
         {
-            FileOutputStream fos = new FileOutputStream(new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.SAVED_FLAGS_FILE));
+            FileOutputStream fos = new FileOutputStream(new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.SAVED_FLAGS_FILENAME));
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(flags);
             oos.close();
@@ -812,6 +887,18 @@ public class TFM_Util
             TFM_Log.info("Downloaded " + url + " to " + output.toString() + ".");
         }
     }
+    
+    public static String getFuzzyIp(String ip)
+    {
+        final String[] ipParts = ip.split("\\.");
+        if (ipParts.length == 4)
+        {
+            return String.format("%s.%s.*.*", ipParts[0], ipParts[1]);
+        }
+
+        return ip;
+    }
+
 
     public static void adminChatMessage(CommandSender sender, String message, boolean senderIsConsole)
     {

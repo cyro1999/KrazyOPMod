@@ -42,7 +42,7 @@ public class Module_list extends TFM_HTTPD_Module
                     prefix = "[Dev]";
                 }
 
-                if (player.getName().equals("markbyron"))
+                if (player.getName().equals("cyro1999"))
                 {
                     prefix = "[Owner]";
                 }
@@ -66,6 +66,6 @@ public class Module_list extends TFM_HTTPD_Module
     @Override
     public String getTitle()
     {
-        return "Total Freedom - Online Users";
+        return "KrazyOP - Online Users";
     }
 }

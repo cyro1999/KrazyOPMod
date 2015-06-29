@@ -33,14 +33,11 @@ public class Command_rank extends TFM_Command
             return true;
         }
 
-        Player player;
-        try
+        final Player player = getPlayer(args[0]);
+
+        if (player == null)
         {
-            player = getPlayer(args[0]);
-        }
-        catch (PlayerNotFoundException ex)
-        {
-            sender.sendMessage(ex.getMessage());
+            sender.sendMessage(TFM_Command.PLAYER_NOT_FOUND);
             return true;
         }
 

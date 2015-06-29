@@ -9,13 +9,10 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandHandler;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandLoader;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
@@ -45,7 +42,7 @@ import org.mcstats.Metrics;
 
 public class TotalFreedomMod extends JavaPlugin
 {
-        public static KOM_Config komconfig;
+    public static KOM_Config komconfig;
     public static FileConfiguration config;
    //
     public static final String KOM_COMMAND_PATH = "com.Cyro1999.KrazyOPMod.Commands";
@@ -54,9 +51,11 @@ public class TotalFreedomMod extends JavaPlugin
     public static final long HEARTBEAT_RATE = 5L; //Seconds
     public static final long SERVICE_CHECKER_RATE = 120L;
     //
-    public static final String SUPERADMIN_FILE = "superadmin.yml";
-    public static final String PERMBAN_FILE = "permban.yml";
-    public static final String SAVED_FLAGS_FILE = "savedflags.dat";
+    public static final String CONFIG_FILENAME = "config.yml";
+    public static final String SUPERADMIN_FILENAME = "superadmin.yml";
+    public static final String PERMBAN_FILENAME = "permban.yml";
+    public static final String PROTECTED_AREA_FILENAME = "protectedareas.dat";
+    public static final String SAVED_FLAGS_FILENAME = "savedflags.dat";
     //
     public static final String MSG_NO_PERMS = ChatColor.YELLOW + "You do not have permission to use this command.";
     public static final String YOU_ARE_OP = ChatColor.YELLOW + "You are now op!";
@@ -122,18 +121,16 @@ public class TotalFreedomMod extends JavaPlugin
             dump.delete();
         }
 
-        // Admin list
-        TFM_AdminList.createBackup();
+        // Create backups
+        TFM_Util.createBackups(CONFIG_FILENAME, true);
+        TFM_Util.createBackups(SUPERADMIN_FILENAME);
+        TFM_Util.createBackups(PERMBAN_FILENAME);
+
+        TFM_UuidManager.load();
         TFM_AdminList.load();
-
-        // Permban list
-        TFM_PermbanList.createBackup();
         TFM_PermbanList.load();
-        
-
-        // Playerlist and bans
-        TFM_PlayerList.getInstance().load();
-        TFM_BanManager.getInstance().load();
+        TFM_PlayerList.load();
+        TFM_BanManager.load();
 
         TFM_Util.deleteFolder(new File("./_deleteme"));
 
@@ -193,11 +190,6 @@ public class TotalFreedomMod extends JavaPlugin
             }
         }
 
-        if (TFM_ConfigEntry.PROTECTED_AREAS_ENABLED.getBoolean())
-        {
-       
-        }
-
         // Heartbeat
         new TFM_Heartbeat(plugin).runTaskTimer(plugin, HEARTBEAT_RATE * 20L, HEARTBEAT_RATE * 20L);
 
@@ -212,8 +204,8 @@ public class TotalFreedomMod extends JavaPlugin
             TFM_Log.warning("Failed to submit metrics data: " + ex.getMessage());
         }
 
-        TFM_ServiceChecker.getInstance().start();
-        TFM_HTTPD_Manager.getInstance().start();
+        TFM_ServiceChecker.start();
+        TFM_HTTPD_Manager.start();
 
         TFM_Log.info("Version " + pluginVersion + " enabled");
 
@@ -223,8 +215,8 @@ public class TotalFreedomMod extends JavaPlugin
             @Override
             public void run()
             {
-                TFM_CommandLoader.getInstance().scan();
-                TFM_CommandBlocker.getInstance().parseBlockingRules();
+                TFM_CommandLoader.scan();
+                TFM_CommandBlocker.load();
                 KOM_CommandLoader.getInstance().scan();
             }
         }.runTaskLater(plugin, 20L);
@@ -237,8 +229,8 @@ public class TotalFreedomMod extends JavaPlugin
     {
         server.getScheduler().cancelTasks(plugin);
 
-        TFM_HTTPD_Manager.getInstance().stop();
-        TFM_BanManager.getInstance().save();
+        TFM_HTTPD_Manager.stop();
+        TFM_BanManager.save();
 
         TFM_Log.info("Plugin disabled");
     }

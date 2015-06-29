@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
-import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import net.minecraft.util.org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -40,7 +39,7 @@ public class Command_potion extends TFM_Command
             {
                 if (!(TFM_AdminList.isSuperAdmin(sender) || senderIsConsole))
                 {
-                    playerMsg(TotalFreedomMod.MSG_NO_PERMS);
+                    playerMsg(TFM_Command.MSG_NO_PERMS);
                     return true;
                 }
                 TFM_Util.adminAction(sender.getName(), "Cleared all potion effects from all players", true);
@@ -58,13 +57,11 @@ public class Command_potion extends TFM_Command
 
                 if (args.length == 2)
                 {
-                    try
+                    target = getPlayer(args[1]);
+
+                    if (target == null)
                     {
-                        target = getPlayer(args[1]);
-                    }
-                    catch (PlayerNotFoundException ex)
-                    {
-                        playerMsg(ex.getMessage(), ChatColor.RED);
+                        playerMsg(TFM_Command.PLAYER_NOT_FOUND, ChatColor.RED);
                         return true;
                     }
                 }
@@ -103,13 +100,12 @@ public class Command_potion extends TFM_Command
 
                 if (args.length == 5)
                 {
-                    try
+
+                    target = getPlayer(args[4]);
+
+                    if (target == null)
                     {
-                        target = getPlayer(args[4]);
-                    }
-                    catch (PlayerNotFoundException ex)
-                    {
-                        playerMsg(ex.getMessage(), ChatColor.RED);
+                        playerMsg(TFM_Command.PLAYER_NOT_FOUND, ChatColor.RED);
                         return true;
                     }
                 }
@@ -139,6 +135,7 @@ public class Command_potion extends TFM_Command
                 try
                 {
                     duration = Integer.parseInt(args[2]);
+                    duration = Math.min(duration, 100000);
                 }
                 catch (NumberFormatException ex)
                 {
@@ -150,6 +147,7 @@ public class Command_potion extends TFM_Command
                 try
                 {
                     amplifier = Integer.parseInt(args[3]);
+                    amplifier = Math.min(amplifier, 100000);
                 }
                 catch (NumberFormatException ex)
                 {

@@ -106,6 +106,6 @@ public class Module_dump extends TFM_HTTPD_Module
     @Override
     public String getTitle()
     {
-        return "TotalFreedomMod :: Request Debug Dumper";
+        return "KrazyOPMod :: Request Debug Dumper";
     }
 }

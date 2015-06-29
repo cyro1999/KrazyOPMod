@@ -40,7 +40,7 @@ public class TFM_PermbanList
         PERMBANNED_PLAYERS.clear();
         PERMBANNED_IPS.clear();
 
-        final TFM_Config config = new TFM_Config(TotalFreedomMod.plugin, TotalFreedomMod.PERMBAN_FILE, true);
+        final TFM_Config config = new TFM_Config(TotalFreedomMod.plugin, TotalFreedomMod.PERMBAN_FILENAME, true);
         config.load();
 
         for (String playername : config.getKeys(false))
@@ -62,8 +62,8 @@ public class TFM_PermbanList
 
     public static void createBackup()
     {
-        final File oldYaml = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.PERMBAN_FILE);
-        final File newYaml = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.PERMBAN_FILE + ".bak");
+        final File oldYaml = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.PERMBAN_FILENAME);
+        final File newYaml = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.PERMBAN_FILENAME + ".bak");
         FileUtil.copy(oldYaml, newYaml);
     }
 }

@@ -18,7 +18,7 @@ public class Command_denick extends TFM_Command
         Player[] onlinePlayers = server.getOnlinePlayers();
         for (Player player : onlinePlayers)
         {
-            TFM_EssentialsBridge.getInstance().setNickname(player.getName(), null);
+            TFM_EssentialsBridge.setNickname(player.getName(), null);
         }
 
         return true;

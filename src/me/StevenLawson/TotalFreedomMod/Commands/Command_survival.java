@@ -2,15 +2,13 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
-import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = AdminLevel.OP, source = SourceType.BOTH)
-@CommandParameters(description = "Quickly change your own gamemode to survival, or define someone's username to change theirs.", usage = "/<command> <[partialname] | -a>")
+@CommandParameters(description = "Quickly change your own gamemode to survival, or define someone's username to change theirs.", usage = "/<command> <[partialname] | -a>", aliases = "gms")
 public class Command_survival extends TFM_Command
 {
     @Override
@@ -37,7 +35,7 @@ public class Command_survival extends TFM_Command
             {
                 if (!TFM_AdminList.isSuperAdmin(sender) || senderIsConsole)
                 {
-                    sender.sendMessage(TotalFreedomMod.MSG_NO_PERMS);
+                    sender.sendMessage(TFM_Command.MSG_NO_PERMS);
                     return true;
                 }
 
@@ -52,13 +50,11 @@ public class Command_survival extends TFM_Command
 
             if (senderIsConsole || TFM_AdminList.isSuperAdmin(sender))
             {
-                try
+                player = getPlayer(args[0]);
+
+                if (player == null)
                 {
-                    player = getPlayer(args[0]);
-                }
-                catch (PlayerNotFoundException ex)
-                {
-                    playerMsg(ex.getMessage(), ChatColor.RED);
+                    playerMsg(TFM_Command.PLAYER_NOT_FOUND);
                     return true;
                 }
             }

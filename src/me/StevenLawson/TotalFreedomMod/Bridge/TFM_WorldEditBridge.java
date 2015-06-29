@@ -1,8 +1,12 @@
 package me.StevenLawson.TotalFreedomMod.Bridge;
 
+import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.world.World;
+import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,7 +21,7 @@ public class TFM_WorldEditBridge
         throw new AssertionError();
     }
 
-    private static WorldEditPlugin getWorldEditPlugin()
+    public static WorldEditPlugin getWorldEditPlugin()
     {
         if (worldEditPlugin == null)
         {
@@ -40,14 +44,14 @@ public class TFM_WorldEditBridge
         return worldEditPlugin;
     }
 
-    private static LocalSession getPlayerSession(Player player)
+    public static BukkitPlayer getBukkitPlayer(Player player)
     {
         try
         {
             final WorldEditPlugin wep = getWorldEditPlugin();
             if (wep != null)
             {
-                return wep.getSession(player);
+                return wep.wrapPlayer(player);
             }
         }
         catch (Exception ex)
@@ -57,14 +61,14 @@ public class TFM_WorldEditBridge
         return null;
     }
 
-    private static BukkitPlayer getBukkitPlayer(Player player)
+    public static LocalSession getPlayerSession(Player player)
     {
         try
         {
             final WorldEditPlugin wep = getWorldEditPlugin();
             if (wep != null)
             {
-                return wep.wrapPlayer(player);
+                return wep.getSession(player);
             }
         }
         catch (Exception ex)
@@ -111,5 +115,38 @@ public class TFM_WorldEditBridge
         {
             TFM_Log.severe(ex);
         }
+    }
+
+    public static void validateSelection(final Player player)
+    {
+        if (TFM_AdminList.isSuperAdmin(player))
+        {
+            return;
+        }
+
+        try
+        {
+            final LocalSession session = getPlayerSession(player);
+
+            if (session == null)
+            {
+                return;
+            }
+
+            final World selectionWorld = session.getSelectionWorld();
+            final Region selection = session.getSelection(selectionWorld);
+        }
+        catch (IncompleteRegionException ex)
+        {
+        }
+        catch (Exception ex)
+        {
+            TFM_Log.severe(ex);
+        }
+    }
+
+    private static org.bukkit.util.Vector getBukkitVector(com.sk89q.worldedit.Vector worldEditVector)
+    {
+        return new org.bukkit.util.Vector(worldEditVector.getX(), worldEditVector.getY(), worldEditVector.getZ());
     }
 }

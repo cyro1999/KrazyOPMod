@@ -4,8 +4,8 @@ import me.StevenLawson.TotalFreedomMod.Bridge.TFM_WorldEditBridge;
 import me.StevenLawson.TotalFreedomMod.TFM_Ban;
 import me.StevenLawson.TotalFreedomMod.TFM_BanManager;
 import me.StevenLawson.TotalFreedomMod.TFM_RollbackManager;
-import me.StevenLawson.TotalFreedomMod.TFM_ServerInterface;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
+import me.StevenLawson.TotalFreedomMod.TFM_UuidManager;
 import net.minecraft.util.org.apache.commons.lang3.ArrayUtils;
 import net.minecraft.util.org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
@@ -27,14 +27,11 @@ public class Command_gtfo extends TFM_Command
             return false;
         }
 
-        Player player;
-        try
+        final Player player = getPlayer(args[0]);
+
+        if (player == null)
         {
-            player = getPlayer(args[0]);
-        }
-        catch (PlayerNotFoundException ex)
-        {
-            playerMsg(ex.getMessage(), ChatColor.RED);
+            playerMsg(TFM_Command.PLAYER_NOT_FOUND, ChatColor.RED);
             return true;
         }
 
@@ -49,7 +46,7 @@ public class Command_gtfo extends TFM_Command
         // Undo WorldEdits:
         try
         {
-            TFM_WorldEditBridge.undo(player, 16);
+            TFM_WorldEditBridge.undo(player, 15);
         }
         catch (NoClassDefFoundError ex)
         {
@@ -79,18 +76,26 @@ public class Command_gtfo extends TFM_Command
         }
 
         // ban IP address:
-        String ip = player.getAddress().getAddress().getHostAddress();
-        String[] ipParts = ip.split("\\.");
-        if (ipParts.length == 4)
-        {
-            ip = String.format("%s.%s.*.*", ipParts[0], ipParts[1]);
-        }
-        TFM_Util.bcastMsg(String.format("Banning: %s, IP: %s.", player.getName(), ip), ChatColor.RED);
+        String ip = TFM_Util.getFuzzyIp(player.getAddress().getAddress().getHostAddress());
 
-        TFM_BanManager.getInstance().addIpBan(new TFM_Ban(ip, player.getName(), sender.getName(), null, reason));
+        final StringBuilder bcast = new StringBuilder()
+                .append(ChatColor.RED)
+                .append("Banning: ")
+                .append(player.getName())
+                .append(", IP: ")
+                .append(ip);
+
+        if (reason != null)
+        {
+            bcast.append(" - Reason: ").append(ChatColor.YELLOW).append(reason);
+        }
+
+        TFM_Util.bcastMsg(bcast.toString());
+
+        TFM_BanManager.addIpBan(new TFM_Ban(ip, player.getName(), sender.getName(), null, reason));
 
         // ban username:
-        TFM_BanManager.getInstance().addUuidBan(new TFM_Ban(player.getUniqueId(), player.getName(), sender.getName(), null, reason));
+        TFM_BanManager.addUuidBan(new TFM_Ban(TFM_UuidManager.getUniqueId(player), player.getName(), sender.getName(), null, reason));
 
         // kick Player:
         player.kickPlayer(ChatColor.RED + "GTFO" + (reason != null ? ("\nReason: " + ChatColor.YELLOW + reason) : ""));

@@ -36,14 +36,11 @@ public class Command_blockcmd extends TFM_Command
             return true;
         }
 
-        Player player;
-        try
+        final Player player = getPlayer(args[0]);
+
+        if (player == null)
         {
-            player = getPlayer(args[0]);
-        }
-        catch (PlayerNotFoundException ex)
-        {
-            playerMsg(ex.getMessage());
+            playerMsg(TFM_Command.PLAYER_NOT_FOUND);
             return true;
         }
 

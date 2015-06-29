@@ -19,11 +19,6 @@ public class Command_setspawnworld extends TFM_Command
 
         playerMsg("Spawn location for this world set to: " + TFM_Util.formatLocation(sender_p.getWorld().getSpawnLocation()));
 
-        if (TFM_ConfigEntry.PROTECTED_AREAS_ENABLED.getBoolean() && TFM_ConfigEntry.AUTO_PROTECT_SPAWNPOINTS.getBoolean())
-        {
-            
-        }
-
         return true;
     }
 }

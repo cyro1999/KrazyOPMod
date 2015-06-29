@@ -56,18 +56,6 @@ public class TFM_EntityListener implements Listener
                 }
             }
         }
-
-        if (TFM_ConfigEntry.PET_PROTECT_ENABLED.getBoolean())
-        {
-            Entity entity = event.getEntity();
-            if (entity instanceof Tameable)
-            {
-                if (((Tameable) entity).isTamed())
-                {
-                    event.setCancelled(true);
-                }
-            }
-        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

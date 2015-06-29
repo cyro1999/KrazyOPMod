@@ -21,14 +21,11 @@ public class Command_smite extends TFM_Command
             return false;
         }
 
-        Player player;
-        try
+        final Player player = getPlayer(args[0]);
+
+        if (player == null)
         {
-            player = getPlayer(args[0]);
-        }
-        catch (PlayerNotFoundException ex)
-        {
-            playerMsg(ex.getMessage(), ChatColor.RED);
+            playerMsg(TFM_Command.PLAYER_NOT_FOUND);
             return true;
         }
 
