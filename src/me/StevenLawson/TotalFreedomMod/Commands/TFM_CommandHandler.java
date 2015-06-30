@@ -2,7 +2,7 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -40,7 +40,6 @@ public class TFM_CommandHandler
                     StringUtils.join(args, " ")), true);
         }
 
-
         final TFM_Command dispatcher;
         try
         {
@@ -56,8 +55,7 @@ public class TFM_CommandHandler
             TFM_Log.severe("Could not load command: " + cmd.getName());
             TFM_Log.severe(ex);
 
-           // Do not remove this, just incase we ever need it.
-           // sender.sendMessage(ChatColor.RED + "Command Error! Could not load command: " + cmd.getName());
+            sender.sendMessage(ChatColor.RED + "Command Error! Could not load command: " + cmd.getName());
             return true;
         }
 

@@ -1,11 +1,26 @@
 package me.StevenLawson.TotalFreedomMod.Listener;
 
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Bat;
+import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Ghast;
+import org.bukkit.entity.Giant;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Slime;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 
 public class TFM_EntityListener implements Listener
 {
@@ -53,6 +68,18 @@ public class TFM_EntityListener implements Listener
                 {
                     event.setCancelled(true);
                     return;
+                }
+            }
+        }
+
+        if (TFM_ConfigEntry.ENABLE_PET_PROTECT.getBoolean())
+        {
+            Entity entity = event.getEntity();
+            if (entity instanceof Tameable)
+            {
+                if (((Tameable) entity).isTamed())
+                {
+                    event.setCancelled(true);
                 }
             }
         }
@@ -146,7 +173,7 @@ public class TFM_EntityListener implements Listener
         if (TFM_ConfigEntry.ALLOW_EXPLOSIONS.getBoolean())
         {
             Projectile entity = event.getEntity();
-            if (event.getEntityType() == EntityType.ARROW && entity.getShooter() instanceof Player)
+            if (event.getEntityType() == EntityType.ARROW)
             {
                 entity.getWorld().createExplosion(entity.getLocation(), 2F);
             }

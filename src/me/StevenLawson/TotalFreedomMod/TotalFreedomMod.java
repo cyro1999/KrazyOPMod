@@ -1,11 +1,11 @@
 package me.StevenLawson.TotalFreedomMod;
 
-import com.Cyro1999.KrazyOPMod.Commands.KOM_CommandHandler;
 import com.Cyro1999.KrazyOPMod.Commands.KOM_CommandLoader;
 import com.Cyro1999.KrazyOPMod.Config.KOM_Config;
 import com.Cyro1999.KrazyOPMod.KOM_Switcher;
 import com.Cyro1999.KrazyOPMod.Listeners.KOM_ChatListener;
 import com.Cyro1999.KrazyOPMod.Listeners.KOM_PlayerListener;
+import com.google.common.base.Function;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandHandler;
+import me.StevenLawson.TotalFreedomMod.Listener.TFM_BukkitTelnetListener;
+import me.StevenLawson.TotalFreedomMod.Listener.TFM_WorldEditListener;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandLoader;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.HTTPD.TFM_HTTPD_Manager;
@@ -21,7 +22,6 @@ import me.StevenLawson.TotalFreedomMod.Listener.TFM_BlockListener;
 import me.StevenLawson.TotalFreedomMod.Listener.TFM_EntityListener;
 import me.StevenLawson.TotalFreedomMod.Listener.TFM_PlayerListener;
 import me.StevenLawson.TotalFreedomMod.Listener.TFM_ServerListener;
-import me.StevenLawson.TotalFreedomMod.Listener.TFM_TelnetListener;
 import me.StevenLawson.TotalFreedomMod.Listener.TFM_WeatherListener;
 import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
 import me.StevenLawson.TotalFreedomMod.World.TFM_BuilderWorld;
@@ -33,6 +33,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.mcstats.Metrics;
@@ -47,10 +48,12 @@ public class TotalFreedomMod extends JavaPlugin
     //
     public static final long HEARTBEAT_RATE = 5L; // Seconds
     public static final long SERVICE_CHECKER_RATE = 120L;
+    public static final int MAX_USERNAME_LENGTH = 20;
     //
     public static final String CONFIG_FILENAME = "config.yml";
     public static final String SUPERADMIN_FILENAME = "superadmin.yml";
     public static final String PERMBAN_FILENAME = "permban.yml";
+    public static final String UUID_FILENAME = "uuids.db";
     public static final String PROTECTED_AREA_FILENAME = "protectedareas.dat";
     public static final String SAVED_FLAGS_FILENAME = "savedflags.dat";
     //
@@ -66,7 +69,6 @@ public class TotalFreedomMod extends JavaPlugin
     public static String pluginName;
     public static String pluginVersion;
     //
-    public static boolean allPlayersFrozen = false;
     public static boolean lockdownEnabled = false;
     public static Map<Player, Double> fuckoffEnabledFor = new HashMap<Player, Double>();
 
@@ -117,6 +119,10 @@ public class TotalFreedomMod extends JavaPlugin
         TFM_PermbanList.load();
         TFM_PlayerList.load();
         TFM_BanManager.load();
+        TFM_ProtectedArea.load();
+
+        // Start SuperAdmin service
+        server.getServicesManager().register(Function.class, TFM_AdminList.SUPERADMIN_SERVICE, plugin, ServicePriority.Normal);
 
         final PluginManager pm = server.getPluginManager();
         pm.registerEvents(new TFM_EntityListener(), plugin);
@@ -124,7 +130,8 @@ public class TotalFreedomMod extends JavaPlugin
         pm.registerEvents(new TFM_PlayerListener(), plugin);
         pm.registerEvents(new TFM_WeatherListener(), plugin);
         pm.registerEvents(new TFM_ServerListener(), plugin);
-        pm.registerEvents(new TFM_TelnetListener(), plugin);
+        pm.registerEvents(new TFM_BukkitTelnetListener(), plugin);
+        pm.registerEvents(new TFM_WorldEditListener(), plugin);
         pm.registerEvents(new KOM_ChatListener(), plugin);
         pm.registerEvents(new KOM_PlayerListener(), plugin);
 
@@ -136,23 +143,23 @@ public class TotalFreedomMod extends JavaPlugin
         {
             TFM_Log.warning("Could not load world: Flatlands");
         }
-
+        
         try
         {
             TFM_BuilderWorld.getInstance().getWorld();
         }
         catch (Exception ex)
         {
-            TFM_Log.warning("Could not load world: BuilderWorld");
+            TFM_Log.warning("Could not load the Builder World!");
         }
-        
+
         try
         {
             TFM_AdminWorld.getInstance().getWorld();
         }
         catch (Exception ex)
         {
-            TFM_Log.warning("Could not load world: AdminWorld");
+            TFM_Log.warning("Could not load the Admin World!");
         }
 
         // Initialize game rules
@@ -199,7 +206,6 @@ public class TotalFreedomMod extends JavaPlugin
             TFM_Log.warning("Failed to submit metrics data: " + ex.getMessage());
         }
 
-        // Load commands later
         new BukkitRunnable()
         {
             @Override
@@ -208,6 +214,9 @@ public class TotalFreedomMod extends JavaPlugin
                 TFM_CommandLoader.scan();
                 TFM_CommandBlocker.load();
                 KOM_CommandLoader.getInstance().scan();
+
+                // Add spawnpoints later - https://github.com/TotalFreedom/TotalFreedomMod/issues/438
+                TFM_ProtectedArea.autoAddSpawnpoints();
             }
         }.runTaskLater(plugin, 20L);
     }
@@ -215,10 +224,11 @@ public class TotalFreedomMod extends JavaPlugin
     @Override
     public void onDisable()
     {
-        server.getScheduler().cancelTasks(plugin);
-
         TFM_HTTPD_Manager.stop();
         TFM_BanManager.save();
+        TFM_UuidManager.close();
+
+        server.getScheduler().cancelTasks(plugin);
 
         TFM_Log.info("Plugin disabled");
     }

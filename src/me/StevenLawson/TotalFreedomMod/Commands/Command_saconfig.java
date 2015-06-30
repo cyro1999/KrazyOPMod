@@ -5,9 +5,8 @@ import me.StevenLawson.TotalFreedomMod.TFM_Admin;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
-import me.StevenLawson.TotalFreedomMod.TFM_TwitterHandler;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -56,6 +55,12 @@ public class Command_saconfig extends TFM_Command
             case CLEARME:
             {
                 final TFM_Admin admin = TFM_AdminList.getEntry(sender_p);
+
+                if (admin == null)
+                {
+                    playerMsg("Could not find your admin entry! Please notify a developer.", ChatColor.RED);
+                    return true;
+                }
 
                 final String ip = TFM_Util.getIp(sender_p);
 
@@ -165,7 +170,7 @@ public class Command_saconfig extends TFM_Command
                     targetName = player.getName();
                 }
 
-                if (!TFM_AdminList.getLowerSuperNames().contains(targetName.toLowerCase()))
+                if (!TFM_AdminList.getLowercaseSuperNames().contains(targetName.toLowerCase()))
                 {
                     playerMsg("Superadmin not found: " + targetName);
                     return true;
@@ -173,13 +178,6 @@ public class Command_saconfig extends TFM_Command
 
                 TFM_Util.adminAction(sender.getName(), "Removing " + targetName + " from the superadmin list", true);
                 TFM_AdminList.removeSuperadmin(TFM_DepreciationAggregator.getOfflinePlayer(server, targetName));
-
-                // Twitterbot
-                if (TFM_ConfigEntry.TWITTERBOT_ENABLED.getBoolean())
-                {
-                    TFM_TwitterHandler.delTwitterVerbose(targetName, sender);
-                }
-
                 break;
             }
         }

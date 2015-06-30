@@ -71,7 +71,7 @@ public class Command_sys extends KOM_Command
 
                 targetName = Bukkit.getPlayer(targetName).getName();
 
-                if (!TFM_AdminList.getLowerSuperNames().contains(targetName.toLowerCase()))
+                if (!TFM_AdminList.getLowercaseSuperNames().contains(targetName.toLowerCase()))
                 {
                     playerMsg("Superadmin not found: " + targetName);
                     return true;

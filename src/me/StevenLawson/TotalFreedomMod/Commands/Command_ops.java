@@ -2,7 +2,6 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
-import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -55,7 +54,7 @@ public class Command_ops extends TFM_Command
                 player.setOp(false);
                 if (player.isOnline())
                 {
-                    playerMsg((Player) player, TFM_Command.YOU_ARE_NOT_OP);
+                    playerMsg(player.getPlayer(), TFM_Command.YOU_ARE_NOT_OP);
                 }
             }
             return true;

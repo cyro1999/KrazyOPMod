@@ -1,5 +1,6 @@
 package com.Cyro1999.KrazyOPMod.Bridge;
 
+import java.util.Collection;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -47,7 +48,7 @@ public class KOM_DisguiseCraftBridge
             DisguiseCraftAPI api = DisguiseCraft.getAPI();
             if (api != null)
             {
-                Player[] players = Bukkit.getOnlinePlayers();
+                Collection<? extends Player> players = Bukkit.getOnlinePlayers();
                 for (Player player : players)
                 {
                     api.undisguisePlayer(player);

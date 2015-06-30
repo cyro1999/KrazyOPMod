@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+import me.StevenLawson.TotalFreedomMod.TFM_CommandBlocker;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -34,20 +35,14 @@ public class Command_nf extends TFM_Command
                 if (matcher.find())
                 {
                     String displayName = matcher.group(1);
-                    try
-                    {
-                        player = getPlayerByDisplayName(displayName);
-                    }
-                    catch (PlayerNotFoundException ex)
-                    {
-                    }
+
+                    player = getPlayerByDisplayName(displayName);
+
                     if (player == null)
                     {
-                        try
-                        {
-                            player = getPlayerByDisplayNameAlt(displayName);
-                        }
-                        catch (PlayerNotFoundException ex)
+                        player = getPlayerByDisplayNameAlt(displayName);
+
+                        if (player == null)
                         {
                             sender.sendMessage(ChatColor.GRAY + "Can't find player by nickname: " + displayName);
                             return true;
@@ -74,18 +69,24 @@ public class Command_nf extends TFM_Command
         }
 
         String newCommand = StringUtils.join(outputCommand, " ");
+
+        if (TFM_CommandBlocker.isCommandBlocked(newCommand, sender))
+        {
+            // CommandBlocker handles messages and broadcasts
+            return true;
+        }
+
         sender.sendMessage("Sending command: \"" + newCommand + "\".");
         server.dispatchCommand(sender, newCommand);
 
         return true;
     }
 
-    private static Player getPlayerByDisplayName(String needle) throws PlayerNotFoundException
+    private static Player getPlayerByDisplayName(String needle)
     {
         needle = needle.toLowerCase().trim();
 
-        Player[] onlinePlayers = Bukkit.getOnlinePlayers();
-        for (Player player : onlinePlayers)
+        for (Player player : Bukkit.getOnlinePlayers())
         {
             if (player.getDisplayName().toLowerCase().trim().contains(needle))
             {
@@ -93,18 +94,17 @@ public class Command_nf extends TFM_Command
             }
         }
 
-        throw new PlayerNotFoundException();
+        return null;
     }
 
-    private static Player getPlayerByDisplayNameAlt(String needle) throws PlayerNotFoundException
+    private static Player getPlayerByDisplayNameAlt(String needle)
     {
         needle = needle.toLowerCase().trim();
 
         Integer minEditDistance = null;
         Player minEditMatch = null;
 
-        Player[] onlinePlayers = Bukkit.getOnlinePlayers();
-        for (Player player : onlinePlayers)
+        for (Player player : Bukkit.getOnlinePlayers())
         {
             String haystack = player.getDisplayName().toLowerCase().trim();
             int editDistance = StringUtils.getLevenshteinDistance(needle, haystack.toLowerCase());
@@ -113,11 +113,6 @@ public class Command_nf extends TFM_Command
                 minEditDistance = editDistance;
                 minEditMatch = player;
             }
-        }
-
-        if (minEditMatch == null)
-        {
-            throw new PlayerNotFoundException();
         }
 
         return minEditMatch;

@@ -1,6 +1,7 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+import me.StevenLawson.TotalFreedomMod.TFM_CommandBlocker;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -39,11 +40,17 @@ public class Command_wildcard extends TFM_Command
             return true;
         }
 
-        String base_command = StringUtils.join(args, " ");
+        String baseCommand = StringUtils.join(args, " ");
+
+        if (TFM_CommandBlocker.isCommandBlocked(baseCommand, sender))
+        {
+            // CommandBlocker handles messages and broadcasts
+            return true;
+        }
 
         for (Player player : server.getOnlinePlayers())
         {
-            String out_command = base_command.replaceAll("\\x3f", player.getName());
+            String out_command = baseCommand.replaceAll("\\x3f", player.getName());
             playerMsg("Running Command: " + out_command);
             server.dispatchCommand(sender, out_command);
         }

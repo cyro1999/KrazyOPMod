@@ -4,7 +4,8 @@ import java.util.List;
 
 public enum TFM_ConfigEntry
 {
-    APPLICATIONS_ENABLED(Boolean.class, "applications_enabled"),
+    APPLICATIONS_ENABLED(Boolean.class, "applications.enabled"),
+    //
     FORCE_IP_ENABLED(Boolean.class, "forceip.enabled"),
     FORCE_IP_PORT(Integer.class, "forceip.port"),
     FORCE_IP_KICKMSG(String.class, "forceip.kickmsg"),
@@ -29,17 +30,11 @@ public enum TFM_ConfigEntry
     HTTPD_PORT(Integer.class, "httpd.port"),
     HTTPD_PUBLIC_FOLDER(String.class, "httpd.public_folder"),
     //
-    SERVER_COLORFUL_MOTD(Boolean.class, "server.colorful_motd"),
     SERVER_NAME(String.class, "server.name"),
     SERVER_ADDRESS(String.class, "server.address"),
-    SERVER_MOTD(String.class, "server.motd"),
     SERVER_OWNERS(List.class, "server.owners"),
     SERVER_BAN_URL(String.class, "server.ban_url"),
     SERVER_PERMBAN_URL(String.class, "server.permban_url"),
-    //
-    TWITTERBOT_ENABLED(Boolean.class, "twitterbot.enabled"),
-    TWITTERBOT_SECRET(String.class, "twitterbot.secret"),
-    TWITTERBOT_URL(String.class, "twitterbot.url"),
     //
     DISABLE_NIGHT(Boolean.class, "disable.night"),
     DISABLE_WEATHER(Boolean.class, "disable.weather"),
@@ -81,11 +76,11 @@ public enum TFM_ConfigEntry
     BLOCKED_COMMANDS(List.class, "blocked_commands"),
     HOST_SENDER_NAMES(List.class, "host_sender_names"),
     UNBANNABLE_USERNAMES(List.class, "unbannable_usernames"),
+    OVERLORD_IPS(List.class, "overlord_ips"),
     NOADMIN_IPS(List.class, "noadmin_ips"),
     ADMIN_ONLY_MODE(Boolean.class, "admin_only_mode"),
     AUTO_ENTITY_WIPE(Boolean.class, "auto_wipe"),
     CONSOLE_IS_SENIOR(Boolean.class, "console_is_senior");
-    
     //
     private final Class<?> type;
     private final String configName;

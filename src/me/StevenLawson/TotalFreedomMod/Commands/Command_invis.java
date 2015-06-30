@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -49,19 +49,18 @@ public class Command_invis extends TFM_Command
 
         if (players.isEmpty())
         {
-            TFM_Util.playerMsg(sender, "There are no invisible players");
+            playerMsg("There are no invisible players");
             return true;
         }
 
         if (smite)
         {
-            TFM_Util.playerMsg(sender, "Smitten " + smites + " players");
+            playerMsg("Smitten " + smites + " players");
         }
         else
         {
-            TFM_Util.playerMsg(sender, "Invisble players (" + players.size() + "): " + StringUtils.join(players, ", "));
+            playerMsg("Invisible players (" + players.size() + "): " + StringUtils.join(players, ", "));
         }
-
 
         return true;
     }

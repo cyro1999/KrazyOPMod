@@ -35,7 +35,7 @@ public class TFM_ServerListener implements Listener
             event.setMotd(ChatColor.RED + "Whitelist enabled.");
         }
         
-        else if (Bukkit.getOnlinePlayers().length >= Bukkit.getMaxPlayers())
+        else if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers())
         {
             event.setMotd(ChatColor.RED + "Server is full.");
         }

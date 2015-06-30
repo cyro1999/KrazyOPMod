@@ -1,16 +1,13 @@
 package me.StevenLawson.TotalFreedomMod;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_Config;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.util.FileUtil;
 
 public class TFM_PermbanList
 {
+
     private static final List<String> PERMBANNED_PLAYERS;
     private static final List<String> PERMBANNED_IPS;
 
@@ -58,12 +55,6 @@ public class TFM_PermbanList
             }
         }
 
-    }
-
-    public static void createBackup()
-    {
-        final File oldYaml = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.PERMBAN_FILENAME);
-        final File newYaml = new File(TotalFreedomMod.plugin.getDataFolder(), TotalFreedomMod.PERMBAN_FILENAME + ".bak");
-        FileUtil.copy(oldYaml, newYaml);
+        TFM_Log.info("Loaded " + PERMBANNED_PLAYERS.size() + " permanently banned players and " + PERMBANNED_IPS.size() + " permanently banned IPs.");
     }
 }

@@ -1,6 +1,5 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
-import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -14,12 +13,6 @@ public class Command_stop extends TFM_Command
     @Override
     public boolean run(CommandSender sender, Player sender_p, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
-        if (!TFM_AdminList.isTelnetAdmin(sender, senderIsConsole))
-        {
-            sender.sendMessage(TFM_Command.MSG_NO_PERMS);
-            return true;
-        }
-        
         TFM_Util.bcastMsg("Server is going offline!", ChatColor.LIGHT_PURPLE);
 
         for (Player player : server.getOnlinePlayers())
