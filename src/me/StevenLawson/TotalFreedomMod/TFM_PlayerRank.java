@@ -1,6 +1,6 @@
 package me.StevenLawson.TotalFreedomMod;
 
-import com.Cyro1999.KrazyOPMod.KOM_Util;
+import com.Cyro1999.CyroFreeOpUtils.CFOU_Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -66,22 +66,22 @@ public enum TFM_PlayerRank
             return IMPOSTOR;
         }
 
-        if (TFM_Util.DEVELOPERS.contains(sender.getName()))
+        if (CFOU_Util.DEVELOPERS.contains(sender.getName()))
         {
             return DEVELOPER;
         }
         
-    else if (KOM_Util.DEVELOPERS.contains(sender.getName()))
+    else if (CFOU_Util.DEVELOPERS.contains(sender.getName()))
         {
             return DEVELOPER;
         }
                 
-     else if (KOM_Util.EXECUTIVES.contains(sender.getName()))
+     else if (CFOU_Util.EXECUTIVES.contains(sender.getName()))
         {
             return EXECUTIVE;
         }
                         
-     else if (KOM_Util.SYSTEMADMINS.contains(sender.getName()))
+     else if (CFOU_Util.SYSTEMADMINS.contains(sender.getName()))
         {
             return SYSTEMADMIN;
         }

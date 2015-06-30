@@ -17,11 +17,11 @@ public class TFM_ServerListener implements Listener
     public void onServerPing(ServerListPingEvent event)
     {
         final String ip = event.getAddress().getHostAddress();
-        event.setMotd(TFM_Util.randomChatColor() + "Krazy" + TFM_Util.randomChatColor() + "OP " + ChatColor.DARK_GRAY + "-" + TFM_Util.randomChatColor() + " Bukkit v" + TFM_ServerInterface.getVersion());
+        event.setMotd(TFM_Util.randomChatColor() + TFM_Util.getPlayerFromIp(ip) + TFM_Util.randomChatColor() + ", welcome to " + "Krazy" + TFM_Util.randomChatColor() + "OP " + ChatColor.DARK_GRAY + "-" + TFM_Util.randomChatColor() + " Running Spigot v" + TFM_ServerInterface.getVersion());
 
         if (TFM_BanManager.isIpBanned(ip))
         {
-            event.setMotd(ChatColor.RED + "You are banned.");
+            event.setMotd(ChatColor.RED + TFM_Util.getPlayerFromIp(ip) +  ", you are banned.");
         }
         
         else if (TFM_ConfigEntry.ADMIN_ONLY_MODE.getBoolean())

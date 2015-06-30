@@ -1115,4 +1115,16 @@ public class TFM_Util
             TFM_Log.info("DEBUG: " + timerName + " used " + this.getTotal() + " ms.");
         }
     }
+    
+    public static String getPlayerFromIp(String ip)
+    {
+        for (TFM_Player player : TFM_PlayerList.getAllPlayers())
+        {
+            if (player.getIps().contains(ip))
+            {
+                return " " + player.getLastLoginName();
+            }
+        }
+        return "";
+    }
 }

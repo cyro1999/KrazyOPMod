@@ -41,8 +41,7 @@ public class TFM_CommandHandler
         }
 
         final TFM_Command dispatcher;
-        try
-        {
+        try {
             final ClassLoader classLoader = TotalFreedomMod.class.getClassLoader();
             dispatcher = (TFM_Command) classLoader.loadClass(String.format("%s.%s%s",
                     COMMAND_PATH,
@@ -50,12 +49,11 @@ public class TFM_CommandHandler
                     cmd.getName().toLowerCase())).newInstance();
             dispatcher.setup(TotalFreedomMod.plugin, sender, dispatcher.getClass());
         }
-        catch (Exception ex)
-        {
-            TFM_Log.severe("Could not load command: " + cmd.getName());
-            TFM_Log.severe(ex);
-
-            // sender.sendMessage(ChatColor.RED + "Command Error! Could not load command: " + cmd.getName());
+        catch (Exception ex) {
+            // TFM_Log.severe("Could not load command: " + cmd.getName());
+            // TFM_Log.severe(ex);
+            TFM_Log.warning("The command " + cmd.getName() + " is being stupid today.");
+            sender.sendMessage(ChatColor.RED + "The command /" + cmd.getName() + "isn't loading correctly. Try again or contact a developer.");
             return true;
         }
 
