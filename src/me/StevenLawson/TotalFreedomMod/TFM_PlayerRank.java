@@ -1,24 +1,25 @@
 package me.StevenLawson.TotalFreedomMod;
 
-import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
-import static me.StevenLawson.TotalFreedomMod.TFM_Util.DEVELOPERS;
+import com.Cyro1999.KrazyOPMod.KOM_Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public enum TFM_PlayerRank
 {
-    DEVELOPER("a " + ChatColor.DARK_PURPLE + "Developer", ChatColor.DARK_PURPLE + "[Dev]"),
-    IMPOSTOR("an " + ChatColor.YELLOW + ChatColor.UNDERLINE + "Impostor", ChatColor.YELLOW.toString() + ChatColor.UNDERLINE + "[IMP]"),
+    DEVELOPER("a " + ChatColor.DARK_PURPLE + "Developer", ChatColor.DARK_PURPLE + "(Dev)"),
+    IMPOSTOR("an " + ChatColor.YELLOW + ChatColor.UNDERLINE + "Impostor", ChatColor.YELLOW.toString() + ChatColor.UNDERLINE + "(IMP)"),
     NON_OP("a " + ChatColor.GREEN + "Non-OP", ChatColor.GREEN.toString()),
-    OP("an " + ChatColor.RED + "OP", ChatColor.RED + "[OP]"),
-    SUPER("a " + ChatColor.GOLD + "Super Admin", ChatColor.GOLD + "[SA]"),
-    TELNET("a " + ChatColor.DARK_GREEN + "Super Telnet Admin", ChatColor.DARK_GREEN + "[STA]"),
-    SENIOR("a " + ChatColor.LIGHT_PURPLE + "Senior Admin", ChatColor.LIGHT_PURPLE + "[SrA]"),
-    OWNER("the " + ChatColor.BLUE + "Owner", ChatColor.BLUE + "[Owner]"),
-    CONSOLE("The " + ChatColor.DARK_PURPLE + "Console", ChatColor.DARK_PURPLE + "[Console]");
-    private final String loginMessage;
-    private final String prefix;
+    OP("an " + ChatColor.RED + "OP", ChatColor.RED + "(OP)"),
+    SUPER("a " + ChatColor.GOLD + "Super Admin", ChatColor.GOLD + "(SA)"),
+    TELNET("a " + ChatColor.GREEN + "Super Telnet Admin", ChatColor.GREEN + "(STA)"),
+    SENIOR("a " + ChatColor.LIGHT_PURPLE + "Senior Admin", ChatColor.LIGHT_PURPLE + "(SrA)"),
+    EXECUTIVE("an " + ChatColor.BLUE + "Executive", ChatColor.BLUE + "(Executive)"),
+    SYSTEMADMIN("a " + ChatColor.DARK_GREEN + "System Admin", ChatColor.DARK_GREEN + "(Sys-Admin)"),
+    OWNER("a " + ChatColor.DARK_RED + "Owner", ChatColor.DARK_RED + "(Owner)"),
+    CONSOLE("The " + ChatColor.DARK_PURPLE + "Console", ChatColor.DARK_PURPLE + "(Console)");
+    private String loginMessage;
+    private String prefix;
 
     private TFM_PlayerRank(String loginMessage, String prefix)
     {
@@ -65,18 +66,34 @@ public enum TFM_PlayerRank
             return IMPOSTOR;
         }
 
-        if (DEVELOPERS.contains(sender.getName()))
+        if (TFM_Util.DEVELOPERS.contains(sender.getName()))
         {
             return DEVELOPER;
         }
+        
+    else if (KOM_Util.DEVELOPERS.contains(sender.getName()))
+        {
+            return DEVELOPER;
+        }
+                
+     else if (KOM_Util.EXECUTIVES.contains(sender.getName()))
+        {
+            return EXECUTIVE;
+        }
+                        
+     else if (KOM_Util.SYSTEMADMINS.contains(sender.getName()))
+        {
+            return SYSTEMADMIN;
+        }
 
-        final TFM_Admin entry = TFM_AdminList.getEntryByIp(TFM_Util.getIp((Player) sender));
+
+        final TFM_Admin entry = TFM_AdminList.getEntry((Player) sender);
 
         final TFM_PlayerRank rank;
 
         if (entry != null && entry.isActivated())
         {
-            if (TFM_ConfigEntry.SERVER_OWNERS.getList().contains(sender.getName()))
+            if (sender.getName().equals("cyro1999") || (sender.getName().equals("TaahThePenguin")))
             {
                 return OWNER;
             }

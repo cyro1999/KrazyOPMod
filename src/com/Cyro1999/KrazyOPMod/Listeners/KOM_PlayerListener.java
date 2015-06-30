@@ -33,34 +33,42 @@ public class KOM_PlayerListener implements Listener
         if (TFM_AdminList.isSuperAdmin(player) && !name.equalsIgnoreCase("varuct")) {
             TFM_PlayerData.getPlayerData(player).setCommandSpy(true);
         }
-        if (KOM_Util.FAMOUS.contains(name.toLowerCase())) {
+        
+        else if (KOM_Util.FAMOUS.contains(name.toLowerCase())) {
             player.setPlayerListName("[Fake]" + name);
             TFM_PlayerData.getPlayerData(player).setTag("&8[&7Fake&8]");
             TFM_Util.bcastMsg(":WARNING: " + name + " is completely and utterly FAKE! - This server is in Offline Mode so anybody can join as anyone!", ChatColor.RED);
         }
+        
         else if (KOM_Util.SYSTEMADMINS.contains(name)) {
-            name = ChatColor.DARK_GREEN + name;
+            player.setPlayerListName(ChatColor.DARK_GREEN + name);
             TFM_PlayerData.getPlayerData(player).setTag("&8[&2System Administrator&8]");
         }
         else if (KOM_Util.OWNERS.contains(name)) {
-            name = ChatColor.DARK_RED + name;
+            player.setPlayerListName(ChatColor.DARK_RED + name);
             TFM_PlayerData.getPlayerData(player).setTag("&8[&4Owner&8]");
         }
         else if (KOM_Util.EXECUTIVES.contains(name)) {
-            name = ChatColor.BLUE + name;
+            player.setPlayerListName(ChatColor.BLUE + name);
             TFM_PlayerData.getPlayerData(player).setTag("&8[&9Executive&8]");
         }
         else if (KOM_Util.DEVELOPERS.contains(name)) {
-            name = ChatColor.DARK_PURPLE + name;
+            player.setPlayerListName(ChatColor.DARK_PURPLE + name);
             TFM_PlayerData.getPlayerData(player).setTag("&8[&5Developer&8]");
         }
-        else if (TFM_AdminList.isSeniorAdmin(player)) {
-             name = ChatColor.LIGHT_PURPLE + name;
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin&8]");
-        }
         else if (TFM_AdminList.isSuperAdmin(player)) {
-            name = ChatColor.AQUA + name;
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&BSuper Admin&8]");
+            if (TFM_AdminList.isSeniorAdmin(player)) {
+                player.setPlayerListName(ChatColor.LIGHT_PURPLE + name);
+                TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin&8]");
+            }
+            else if (TFM_AdminList.isTelnetAdmin(player, true)) {
+                player.setPlayerListName(ChatColor.DARK_GREEN + name);
+                TFM_PlayerData.getPlayerData(player).setTag("&8[&2Telnet Admin&8]");
+            }
+            else {
+                player.setPlayerListName(ChatColor.AQUA + name);
+                TFM_PlayerData.getPlayerData(player).setTag("&8[&BSuper Admin&8]");
+            }
         }
         
         try {
