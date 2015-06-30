@@ -55,7 +55,7 @@ public class TFM_CommandHandler
             TFM_Log.severe("Could not load command: " + cmd.getName());
             TFM_Log.severe(ex);
 
-            sender.sendMessage(ChatColor.RED + "Command Error! Could not load command: " + cmd.getName());
+            // sender.sendMessage(ChatColor.RED + "Command Error! Could not load command: " + cmd.getName());
             return true;
         }
 
@@ -73,7 +73,7 @@ public class TFM_CommandHandler
         {
             TFM_Log.severe("Command Error: " + commandLabel);
             TFM_Log.severe(ex);
-            sender.sendMessage(ChatColor.RED + "Command Error: " + ex.getMessage());
+            // sender.sendMessage(ChatColor.RED + "Command Error: " + ex.getMessage());
         }
 
         return true;
