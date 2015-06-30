@@ -3,8 +3,10 @@ package com.Cyro1999.KrazyOPMod.Listeners;
 import com.Cyro1999.KrazyOPMod.KOM_Messages;
 import com.Cyro1999.KrazyOPMod.KOM_Util;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
+import me.StevenLawson.TotalFreedomMod.TFM_Player;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -23,48 +25,48 @@ public class KOM_PlayerListener implements Listener
     @EventHandler(priority = EventPriority.HIGH)
     public static void onPlayerJoinEvent(PlayerJoinEvent event)
     {
-             
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
+        final String ip = TFM_Util.getIp(player);
+        final TFM_Player playerEntry;
+        String name = player.getName();
 
-        if (TFM_AdminList.isSuperAdmin(player) && !player.getName().equalsIgnoreCase("varuct"))
-        {
+        if (TFM_AdminList.isSuperAdmin(player) && !name.equalsIgnoreCase("varuct")) {
             TFM_PlayerData.getPlayerData(player).setCommandSpy(true);
         }
-        if (KOM_Util.FAMOUS.contains(player.getName().toLowerCase()))
-        {
-            player.setPlayerListName("[Fake]" + player.getName());
+        if (KOM_Util.FAMOUS.contains(name.toLowerCase())) {
+            player.setPlayerListName("[Fake]" + name);
             TFM_PlayerData.getPlayerData(player).setTag("&8[&7Fake&8]");
-            TFM_Util.bcastMsg(":WARNING: " + player.getName() + " is completely and utterly FAKE! - This server is in Offline Mode so anybody can join as anyone!", ChatColor.RED);
+            TFM_Util.bcastMsg(":WARNING: " + name + " is completely and utterly FAKE! - This server is in Offline Mode so anybody can join as anyone!", ChatColor.RED);
         }
-        else if (KOM_Util.SYSTEMADMINS.contains(player.getName()))
-        {
-            player.setPlayerListName(ChatColor.DARK_GREEN + player.getName());
+        else if (KOM_Util.SYSTEMADMINS.contains(name)) {
+            name = ChatColor.DARK_GREEN + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&2System Administrator&8]");
         }
-        else if (KOM_Util.OWNERS.contains(player.getName()))
-        {
-            player.setPlayerListName(ChatColor.DARK_RED + player.getName());
+        else if (KOM_Util.OWNERS.contains(name)) {
+            name = ChatColor.DARK_RED + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&4Owner&8]");
         }
-        else if (KOM_Util.EXECUTIVES.contains(player.getName()))
-        {
-            player.setPlayerListName(ChatColor.BLUE + player.getName());
+        else if (KOM_Util.EXECUTIVES.contains(name)) {
+            name = ChatColor.BLUE + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&9Executive&8]");
         }
-        else if (KOM_Util.DEVELOPERS.contains(player.getName()))
-        {
-            player.setPlayerListName(ChatColor.DARK_PURPLE + player.getName());
+        else if (KOM_Util.DEVELOPERS.contains(name)) {
+            name = ChatColor.DARK_PURPLE + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&5Developer&8]");
         }
-        else if (TFM_AdminList.isSeniorAdmin(player))
-        {
-            player.setPlayerListName(ChatColor.LIGHT_PURPLE + player.getName());
+        else if (TFM_AdminList.isSeniorAdmin(player)) {
+             name = ChatColor.LIGHT_PURPLE + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin&8]");
         }
-        else if (TFM_AdminList.isSuperAdmin(player))
-        {
-            player.setPlayerListName(ChatColor.AQUA + player.getName());
+        else if (TFM_AdminList.isSuperAdmin(player)) {
+            name = ChatColor.AQUA + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&BSuper Admin&8]");
+        }
+        
+        try {
+            player.setPlayerListName(StringUtils.substring(name, 0, 16));
+        }
+        catch (IllegalArgumentException ex) {
         }
     }
     

@@ -857,42 +857,6 @@ public class TFM_PlayerListener implements Listener
 
         //TODO: Cleanup
         String name = player.getName();
-        if (TFM_Util.DEVELOPERS.contains(player.getName()))
-        {
-            name = ChatColor.DARK_PURPLE + name;
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&5Developer&8]");
-        }
-        else if (TFM_AdminList.isSuperAdmin(player))
-        {
-            if (TFM_ConfigEntry.SERVER_OWNERS.getList().contains(name))
-            {
-                name = ChatColor.BLUE + name;
-                TFM_PlayerData.getPlayerData(player).setTag("&8[&9Owner&8]");
-            }
-            else if (TFM_AdminList.isSeniorAdmin(player))
-            {
-                name = ChatColor.LIGHT_PURPLE + name;
-                TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin&8]");
-            }
-            else if (TFM_AdminList.isTelnetAdmin(player, true))
-            {
-                name = ChatColor.DARK_GREEN + name;
-                TFM_PlayerData.getPlayerData(player).setTag("&8[&2Telnet Admin&8]");
-            }
-            else
-            {
-                name = ChatColor.AQUA + name;
-                TFM_PlayerData.getPlayerData(player).setTag("&8[&BSuper Admin&8]");
-            }
-        }
-
-        try
-        {
-            player.setPlayerListName(StringUtils.substring(name, 0, 16));
-        }
-        catch (IllegalArgumentException ex)
-        {
-        }
 
         new BukkitRunnable()
         {
