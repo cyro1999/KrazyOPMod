@@ -1,9 +1,9 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
+import com.Cyro1999.CyroFreeOpUtils.CFOU_PlayerRank;
 import java.util.ArrayList;
 import java.util.List;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
-import me.StevenLawson.TotalFreedomMod.TFM_PlayerRank;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
@@ -82,7 +82,7 @@ public class Command_list extends TFM_Command
                 continue;
             }
 
-            names.add(TFM_PlayerRank.fromSender(player).getPrefix() + player.getName());
+            names.add(CFOU_PlayerRank.fromSender(player).getPrefix() + player.getName());
         }
 
         onlineUsers.append("Connected ");

@@ -1,5 +1,10 @@
 package me.StevenLawson.TotalFreedomMod;
 
+import com.Cyro1999.CyroFreeOpUtils.CFOU_Log;
+import com.Cyro1999.CyroFreeOpUtils.Commands.CFOU_CommandLoader;
+import com.Cyro1999.CyroFreeOpUtils.Listeners.CFOU_ChatListener;
+import com.Cyro1999.CyroFreeOpUtils.Listeners.CFOU_PlayerListener;
+import com.Cyro1999.CyroFreeOpUtils.World.CFOU_BuilderWorld;
 import com.google.common.base.Function;
 import java.io.File;
 import java.io.IOException;
@@ -119,12 +124,21 @@ public class TotalFreedomMod extends JavaPlugin
         pm.registerEvents(new TFM_ServerListener(), plugin);
         pm.registerEvents(new TFM_BukkitTelnetListener(), plugin);
         pm.registerEvents(new TFM_WorldEditListener(), plugin);
+        pm.registerEvents(new CFOU_ChatListener(), plugin);
+        pm.registerEvents(new CFOU_PlayerListener(), plugin);
 
         try {
             TFM_Flatlands.getInstance().getWorld();
         }
         catch (Exception ex) {
             TFM_Log.warning("Could not load the Flatlands!");
+        }
+        
+        try {
+            CFOU_BuilderWorld.getInstance().getWorld();
+        }
+        catch (Exception ex) {
+            CFOU_Log.warning("Could not load the Builder World!");
         }
 
         try {
@@ -179,6 +193,7 @@ public class TotalFreedomMod extends JavaPlugin
             public void run() {
                 TFM_CommandLoader.scan();
                 TFM_CommandBlocker.load();
+                CFOU_CommandLoader.scan();
                 TFM_ProtectedArea.autoAddSpawnpoints();
             }
         }.runTaskLater(plugin, 20L);

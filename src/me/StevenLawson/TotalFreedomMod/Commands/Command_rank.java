@@ -1,6 +1,6 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
-import me.StevenLawson.TotalFreedomMod.TFM_PlayerRank;
+import com.Cyro1999.CyroFreeOpUtils.CFOU_PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,7 +17,7 @@ public class Command_rank extends TFM_Command
         {
             for (Player player : server.getOnlinePlayers())
             {
-                playerMsg(player.getName() + " is " + TFM_PlayerRank.fromSender(player).getLoginMessage());
+                playerMsg(player.getName() + " is " + CFOU_PlayerRank.fromSender(player).getLoginMessage());
             }
             return true;
         }
@@ -29,7 +29,7 @@ public class Command_rank extends TFM_Command
 
         if (args.length == 0)
         {
-            playerMsg(sender.getName() + " is " + TFM_PlayerRank.fromSender(sender).getLoginMessage(), ChatColor.AQUA);
+            playerMsg(sender.getName() + " is " + CFOU_PlayerRank.fromSender(sender).getLoginMessage(), ChatColor.AQUA);
             return true;
         }
 
@@ -41,7 +41,7 @@ public class Command_rank extends TFM_Command
             return true;
         }
 
-        playerMsg(player.getName() + " is " + TFM_PlayerRank.fromSender(player).getLoginMessage(), ChatColor.AQUA);
+        playerMsg(player.getName() + " is " + CFOU_PlayerRank.fromSender(player).getLoginMessage(), ChatColor.AQUA);
 
         return true;
     }

@@ -1,5 +1,6 @@
 package me.StevenLawson.TotalFreedomMod;
 
+import com.Cyro1999.CyroFreeOpUtils.CFOU_PlayerRank;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -917,7 +918,7 @@ public class TFM_Util
 
     public static void adminChatMessage(CommandSender sender, String message, boolean senderIsConsole)
     {
-        String name = sender.getName() + " " + TFM_PlayerRank.fromSender(sender).getPrefix() + ChatColor.WHITE;
+        String name = sender.getName() + " " + CFOU_PlayerRank.fromSender(sender).getPrefix() + ChatColor.WHITE;
         TFM_Log.info("[ADMIN] " + name + ": " + message);
 
         for (Player player : Bukkit.getOnlinePlayers())

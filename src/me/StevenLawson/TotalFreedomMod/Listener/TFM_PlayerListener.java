@@ -1,5 +1,6 @@
 package me.StevenLawson.TotalFreedomMod.Listener;
 
+import com.Cyro1999.CyroFreeOpUtils.CFOU_PlayerRank;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -19,7 +20,6 @@ import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TFM_Player;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerList;
-import me.StevenLawson.TotalFreedomMod.TFM_PlayerRank;
 import me.StevenLawson.TotalFreedomMod.TFM_RollbackManager;
 import me.StevenLawson.TotalFreedomMod.TFM_RollbackManager.RollbackEntry;
 import me.StevenLawson.TotalFreedomMod.TFM_ServerInterface;
@@ -844,7 +844,7 @@ public class TFM_PlayerListener implements Listener
         if (TFM_AdminList.isAdminImpostor(player))
         {
             TFM_Util.bcastMsg("Warning: " + player.getName() + " has been flagged as an impostor and has been frozen!", ChatColor.RED);
-            TFM_Util.bcastMsg(ChatColor.AQUA + player.getName() + " is " + TFM_PlayerRank.getLoginMessage(player));
+            TFM_Util.bcastMsg(ChatColor.AQUA + player.getName() + " is " + CFOU_PlayerRank.getLoginMessage(player));
             player.getInventory().clear();
             player.setOp(false);
             player.setGameMode(GameMode.SURVIVAL);
@@ -852,7 +852,7 @@ public class TFM_PlayerListener implements Listener
         }
         else if (TFM_AdminList.isSuperAdmin(player) || TFM_Util.DEVELOPERS.contains(player.getName()))
         {
-            TFM_Util.bcastMsg(ChatColor.AQUA + player.getName() + " is " + TFM_PlayerRank.getLoginMessage(player));
+            TFM_Util.bcastMsg(ChatColor.AQUA + player.getName() + " is " + CFOU_PlayerRank.getLoginMessage(player));
         }
 
         //TODO: Cleanup
