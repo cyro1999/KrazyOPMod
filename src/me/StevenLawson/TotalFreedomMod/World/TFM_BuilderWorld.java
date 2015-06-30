@@ -1,13 +1,13 @@
 package me.StevenLawson.TotalFreedomMod.World;
 
-import com.Cyro1999.KrazyOPMod.KOM_Util;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
+import java.util.Map.Entry;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_GameRuleHandler;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
@@ -32,7 +32,7 @@ public final class TFM_BuilderWorld extends TFM_CustomWorld
     private final Map<CommandSender, Boolean> accessCache = new HashMap<CommandSender, Boolean>();
     //
     private Long cacheLastCleared = null;
-    private Map<Player, Player> guestList = new HashMap<Player, Player>();
+    private Map<Player, Player> guestList = new HashMap<Player, Player>(); // Guest, Supervisor
     private WeatherMode weatherMode = WeatherMode.OFF;
     private TimeOfDay timeOfDay = TimeOfDay.INHERIT;
 
@@ -72,7 +72,7 @@ public final class TFM_BuilderWorld extends TFM_CustomWorld
         org.bukkit.material.Sign signData = (org.bukkit.material.Sign) welcomeSign.getData();
         signData.setFacingDirection(BlockFace.NORTH);
 
-        welcomeSign.setLine(0, ChatColor.GREEN + "BuilderWorld");
+        welcomeSign.setLine(0, ChatColor.GREEN + "AdminWorld");
         welcomeSign.setLine(1, ChatColor.DARK_GRAY + "---");
         welcomeSign.setLine(2, ChatColor.YELLOW + "Spawn Point");
         welcomeSign.setLine(3, ChatColor.DARK_GRAY + "---");
@@ -102,35 +102,38 @@ public final class TFM_BuilderWorld extends TFM_CustomWorld
 
     public Player removeGuest(Player guest)
     {
-        Player player = guestList.remove(guest);
+        final Player player = guestList.remove(guest);
         wipeAccessCache();
         return player;
     }
 
     public Player removeGuest(String partialName)
     {
-        partialName = partialName.toLowerCase().trim();
-        Iterator<Player> it = guestList.values().iterator();
+        partialName = partialName.toLowerCase();
+        final Iterator<Player> it = guestList.keySet().iterator();
+
         while (it.hasNext())
         {
-            Player player = it.next();
-            if (player.getName().toLowerCase().trim().contains(partialName))
+            final Player player = it.next();
+            if (player.getName().toLowerCase().contains(partialName))
             {
-                return removeGuest(player);
+                removeGuest(player);
+                return player;
             }
         }
+
         return null;
     }
 
     public String guestListToString()
     {
-        List<String> output = new ArrayList<String>();
-        Iterator<Map.Entry<Player, Player>> it = guestList.entrySet().iterator();
+        final List<String> output = new ArrayList<String>();
+        final Iterator<Map.Entry<Player, Player>> it = guestList.entrySet().iterator();
         while (it.hasNext())
         {
-            Map.Entry<Player, Player> entry = it.next();
-            Player player = entry.getKey();
-            Player supervisor = entry.getValue();
+            final Entry<Player, Player> entry = it.next();
+            final Player player = entry.getKey();
+            final Player supervisor = entry.getValue();
             output.add(player.getName() + " (Supervisor: " + supervisor.getName() + ")");
         }
         return StringUtils.join(output, ", ");
@@ -200,7 +203,7 @@ public final class TFM_BuilderWorld extends TFM_CustomWorld
         Boolean cached = accessCache.get(player);
         if (cached == null)
         {
-            boolean canAccess = KOM_Util.BUILDERS.contains(player.getName());
+            boolean canAccess = TFM_AdminList.isSuperAdmin(player);
             if (!canAccess)
             {
                 Player supervisor = guestList.get(player);
@@ -339,10 +342,10 @@ public final class TFM_BuilderWorld extends TFM_CustomWorld
 
     public static TFM_BuilderWorld getInstance()
     {
-        return TFM_AdminWorldHolder.INSTANCE;
+        return TFM_BuilderWorldHolder.INSTANCE;
     }
 
-    private static class TFM_AdminWorldHolder
+    private static class TFM_BuilderWorldHolder
     {
         private static final TFM_BuilderWorld INSTANCE = new TFM_BuilderWorld();
     }

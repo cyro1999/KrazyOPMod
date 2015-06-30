@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import me.StevenLawson.TotalFreedomMod.*;
 import me.StevenLawson.TotalFreedomMod.Commands.Command_landmine;
-import me.StevenLawson.TotalFreedomMod.TFM_RollbackManager.RollbackEntry;
+import me.StevenLawson.TotalFreedomMod.World.TFM_BuilderWorld;
 import net.minecraft.util.org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -97,38 +97,6 @@ public class TFM_PlayerListener implements Listener
             {
                 switch (event.getMaterial())
                 {
-                    case STICK:
-                    {
-                        if (!TFM_AdminList.isSuperAdmin(player))
-                        {
-                            break;
-                        }
-
-                        event.setCancelled(true);
-
-                        final Location location = player.getTargetBlock(null, 5).getLocation();
-                        final List<RollbackEntry> entries = TFM_RollbackManager.getEntriesAtLocation(location);
-
-                        if (entries.isEmpty())
-                        {
-                            TFM_Util.playerMsg(player, "No block edits at that location.");
-                            break;
-                        }
-
-                        TFM_Util.playerMsg(player, "Block edits at ("
-                                + ChatColor.WHITE + "x" + location.getBlockX()
-                                + ", y" + location.getBlockY()
-                                + ", z" + location.getBlockZ()
-                                + ChatColor.BLUE + ")" + ChatColor.WHITE + ":", ChatColor.BLUE);
-                        for (RollbackEntry entry : entries)
-                        {
-                            TFM_Util.playerMsg(player, " - " + ChatColor.BLUE + entry.author + " " + entry.getType() + " "
-                                    + StringUtils.capitalize(entry.getMaterial().toString().toLowerCase()) + (entry.data == 0 ? "" : ":" + entry.data));
-                        }
-
-                        break;
-                    }
-
                     case BONE:
                     {
                         if (!playerdata.mobThrowerEnabled())
@@ -277,6 +245,7 @@ public class TFM_PlayerListener implements Listener
     public void onPlayerTeleport(PlayerTeleportEvent event)
     {
         TFM_AdminWorld.getInstance().validateMovement(event);
+        TFM_BuilderWorld.getInstance().validateMovement(event);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -297,6 +266,11 @@ public class TFM_PlayerListener implements Listener
         }
 
         if (!TFM_AdminWorld.getInstance().validateMovement(event))
+        {
+            return;
+        }
+        
+        if (!TFM_BuilderWorld.getInstance().validateMovement(event))
         {
             return;
         }

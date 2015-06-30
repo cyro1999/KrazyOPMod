@@ -74,7 +74,7 @@ public abstract class KOM_Command
 
             AdminLevel level = permissions.level();
             SourceType source = permissions.source();
-            boolean block_host_console = permissions.blockHostConsole();
+            boolean block_host_console = permissions.block_Host_Console();
 
             Player sender_p = null;
             if (this.commandSender instanceof Player)

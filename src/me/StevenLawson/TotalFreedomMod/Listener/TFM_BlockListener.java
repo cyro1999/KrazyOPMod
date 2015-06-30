@@ -224,24 +224,6 @@ public class TFM_BlockListener implements Listener
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onRollbackBlockBreak(BlockBreakEvent event)
-    {
-        if (!TFM_AdminList.isSuperAdmin(event.getPlayer()))
-        {
-            TFM_RollbackManager.blockBreak(event);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onRollbackBlockPlace(BlockPlaceEvent event)
-    {
-        if (!TFM_AdminList.isSuperAdmin(event.getPlayer()))
-        {
-            TFM_RollbackManager.blockPlace(event);
-        }
-    }
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockFromTo(BlockFromToEvent event)
     {

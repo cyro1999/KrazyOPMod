@@ -1,7 +1,6 @@
 package com.Cyro1999.KrazyOPMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
-import me.StevenLawson.TotalFreedomMod.TFM_RollbackManager;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -95,7 +94,7 @@ public class Command_impl extends KOM_Command
             p.setHealth(0.0D);
             p.closeInventory();
             p.getInventory().clear();
-            TFM_RollbackManager.rollback(p.getName());
+            Bukkit.dispatchCommand(sender, "co rb t:1d u:" + p.getName() + " r:#global #silent");
           }
         }.runTaskLater(this.plugin, 60L);
         

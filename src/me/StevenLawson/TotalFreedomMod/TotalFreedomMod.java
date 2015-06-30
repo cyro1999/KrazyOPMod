@@ -1,7 +1,9 @@
 package me.StevenLawson.TotalFreedomMod;
 
+import com.Cyro1999.KrazyOPMod.Commands.KOM_CommandHandler;
 import com.Cyro1999.KrazyOPMod.Commands.KOM_CommandLoader;
 import com.Cyro1999.KrazyOPMod.Config.KOM_Config;
+import com.Cyro1999.KrazyOPMod.KOM_Switcher;
 import com.Cyro1999.KrazyOPMod.Listeners.KOM_ChatListener;
 import com.Cyro1999.KrazyOPMod.Listeners.KOM_PlayerListener;
 import java.io.File;
@@ -224,7 +226,7 @@ public class TotalFreedomMod extends JavaPlugin
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
-        return TFM_CommandHandler.handleCommand(sender, cmd, commandLabel, args);
+        return KOM_Switcher.handleCommand(sender, cmd, commandLabel, args);
     }
 
     private static void setAppProperties()

@@ -17,7 +17,6 @@ import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
@@ -155,7 +154,7 @@ public class KOM_CommandLoader
                                         matcher.group(1).split("_")[1],
                                         commandPermissions.level(),
                                         commandPermissions.source(),
-                                        commandPermissions.blockHostConsole(),
+                                        commandPermissions.block_Host_Console(),
                                         commandParameters.description(),
                                         commandParameters.usage(),
                                         commandParameters.aliases());
