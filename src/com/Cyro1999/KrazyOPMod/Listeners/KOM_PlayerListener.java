@@ -30,7 +30,7 @@ public class KOM_PlayerListener implements Listener
         final TFM_Player playerEntry;
         String name = player.getName();
 
-        if (TFM_AdminList.isSuperAdmin(player) && !name.equalsIgnoreCase("varuct")) {
+        if (TFM_AdminList.isSuperAdmin(player)) {
             TFM_PlayerData.getPlayerData(player).setCommandSpy(true);
         }
         
