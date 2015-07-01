@@ -160,6 +160,7 @@ landmines_enabled: false
 mp44_enabled: false
 tossmob_enabled: false
 applications_enabled: true
+training_mode: false
 
 # Moblimiter
 moblimiter:
@@ -202,35 +203,29 @@ announcer:
   enabled: true
 
   # Interval between announcements, in seconds.
-  interval: 600
+  interval: 120
 
   # Prefix for all announcements
-  prefix: '&5[&eTotalFreedom&5] &b'
+  prefix: '&8[&1K&2r&3a&4z&5y&6O&7P&8] &b'
 
   announcements:
-    - 'Be sure to visit our forums at &6http://totalfreedom.boards.net/'
-    - 'You can always review the server rules here: &6http://totalfreedom.me/'
+    - 'Be sure to visit our forums at &6http://krazyop.boards.net/'
     - 'If you are not OP, be sure to ask!'
     - 'Somebody breaking the rules?  Report it!  /report <user> <reason>'
-    - 'Griefing is not allowed!'
-    - 'Hacking is allowed!'
+    - 'Griefing is &cNOT ALLOWED!'
+    - 'Hacking is &aALLOWED!'
     - 'Interested in becoming admin? Do "/ai" for more information!'
     - 'You may view all online administrators via "/list -a"'
-    - 'Save your buildings via WorldEdit!  http://totalfreedom.me for more information!'
+    - 'Save your buildings via WorldEdit! Visit http://krazyop.github.io/ for more information!'
     - 'Famous players, such as Notch, are always fake!  We are an offline/cracked server!'
-    - 'You may contact TotalFreedoms Support on Twitter!  pravi.us/nGS'
-    - 'You may download TotalFreedomMod here: pravi.us/V8c'
-    - 'MarkByron is TotalFreedoms owner.'
+    - 'Cyro1999 is KrazyOPs owner.'
     - 'Server lagging?  Check the lag via "/tps"'
-    - 'You are allowed to record and stream videos on TotalFreedom :D'
-    - 'An admin abusing?  Report it! pravi.us/vfa'
+    - 'You are allowed to record and stream videos on KrazyOP :D'
     - 'Player vs Player while in creative/god mode it forbidden!'
     - 'Spawn killing is forbidden!'
     - 'Invisible potions are allowed!'
     - 'Serial griefing and trolling will result in permanently being banned!'
-    - 'TotalFreedom does not accept any form of donations!'
     - 'Racism, Nazism, and Sexism is strictly forbidden!'
-    - 'Join our Mumble server! IP: 64.34.202.140:2862'
 
 # Players who cannot be banned by username
 unbannable_usernames:

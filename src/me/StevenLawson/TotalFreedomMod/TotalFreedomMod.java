@@ -118,6 +118,7 @@ public class TotalFreedomMod extends JavaPlugin
         TFM_PlayerList.load();
         TFM_BanManager.load();
         TFM_ProtectedArea.load();
+        TFM_Announcer.load();
 
         // Start SuperAdmin service
         server.getServicesManager().register(Function.class, TFM_AdminList.SUPERADMIN_SERVICE, plugin, ServicePriority.Normal);

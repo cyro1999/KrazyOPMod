@@ -4,7 +4,7 @@ import java.util.List;
 
 public enum TFM_ConfigEntry
 {
-    APPLICATIONS_ENABLED(Boolean.class, "applications.enabled"),
+    APPLICATIONS_ENABLED(Boolean.class, "applications_enabled"),
     //
     FORCE_IP_ENABLED(Boolean.class, "forceip.enabled"),
     FORCE_IP_PORT(Integer.class, "forceip.port"),
@@ -64,6 +64,11 @@ public enum TFM_ConfigEntry
     //
     FLATLANDS_GENERATE(Boolean.class, "flatlands.generate"),
     FLATLANDS_GENERATE_PARAMS(String.class, "flatlands.generate_params"),
+    //
+    ANNOUNCER_ENABLED(Boolean.class, "announcer.enabled"),
+    ANNOUNCER_INTERVAL(Integer.class, "announcer.interval"),
+    ANNOUNCER_PREFIX(String.class, "announcer.prefix"),
+    ANNOUNCER_ANNOUNCEMENTS(List.class, "announcer.announcements"),
     //
     EXPLOSIVE_RADIUS(Double.class, "explosive_radius"),
     FREECAM_TRIGGER_COUNT(Integer.class, "freecam_trigger_count"),
