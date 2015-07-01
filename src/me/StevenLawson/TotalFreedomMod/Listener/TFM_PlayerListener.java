@@ -668,6 +668,7 @@ public class TFM_PlayerListener implements Listener
         final Player player = event.getPlayer();
 
         final TFM_PlayerData playerdata = TFM_PlayerData.getPlayerData(player);
+        
         playerdata.setLastCommand(command);
 
         if (playerdata.incrementAndGetMsgCount() > MSG_PER_HEARTBEAT)

@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandHandler;
 import me.StevenLawson.TotalFreedomMod.Listener.TFM_BukkitTelnetListener;
 import me.StevenLawson.TotalFreedomMod.Listener.TFM_WorldEditListener;
@@ -26,6 +27,7 @@ import me.StevenLawson.TotalFreedomMod.Listener.TFM_ServerListener;
 import me.StevenLawson.TotalFreedomMod.Listener.TFM_WeatherListener;
 import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
 import me.StevenLawson.TotalFreedomMod.World.TFM_Flatlands;
+import net.camtech.verification.SocketServer;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -40,6 +42,10 @@ import org.mcstats.Metrics;
 
 public class TotalFreedomMod extends JavaPlugin
 {
+    // CamVerify //
+    Logger camlogger;
+    private SocketServer socketServer = new SocketServer();
+    private Thread thread;
     //
     public static final String KOM_COMMAND_PATH = "com.Cyro1999.KrazyOPMod.Commands";
     public static final String KOM_COMMAND_PREFIX = "Command_";
@@ -177,6 +183,11 @@ public class TotalFreedomMod extends JavaPlugin
 
         timer.update();
 
+        // CamVerify
+        thread = new Thread(socketServer);
+        thread.start();
+        TFM_Log.info("CamVerify by Camzie99 has been hardcoded into TFM to make verifying easier!");
+        
         TFM_Log.info("Version " + pluginVersion + " for " + TFM_ServerInterface.COMPILE_NMS_VERSION + " enabled in " + timer.getTotal() + "ms");
 
         // Metrics @ http://mcstats.org/plugin/TotalFreedomMod
@@ -205,6 +216,14 @@ public class TotalFreedomMod extends JavaPlugin
         TFM_HTTPD_Manager.stop();
         TFM_BanManager.save();
         TFM_UuidManager.close();
+        
+        // CamVerify
+        try {
+            this.socketServer.sock.close();
+        }
+        catch(IOException ex) {
+            this.camlogger.severe(ex.getMessage());
+        }
 
         TFM_Log.info("Plugin disabled");
     }

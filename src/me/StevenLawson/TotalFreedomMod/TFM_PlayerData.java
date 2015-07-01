@@ -107,6 +107,11 @@ public class TFM_PlayerData
     private boolean cmdspyEnabled = false;
     private String tag = null;
     private int warningCount = 0;
+    // Start FOPM Changes //
+    private boolean inGod = false;
+    private boolean isDoubleJumper = false;
+    private boolean inSeniorAdminchat = false;
+    // End FOPM Changes //
 
     private TFM_PlayerData(Player player, UUID uuid, String ip)
     {
@@ -114,6 +119,34 @@ public class TFM_PlayerData
         this.uuid = uuid;
         this.ip = ip;
     }
+    
+    // Start FOPM Changes //
+    
+    public boolean inGod() {
+        return this.inGod;
+    }
+
+    public void setGod(boolean state) {
+        this.inGod = state;
+    }
+
+    public boolean isDoubleJumper() {
+        return this.isDoubleJumper;
+    }
+
+    public void setDoubleJumper(boolean state) {
+        this.isDoubleJumper = state;
+    }
+    
+    public void setSeniorAdminChat(boolean inSeniorAdminchat) {
+        this.inSeniorAdminchat = inSeniorAdminchat;
+    }
+
+    public boolean inSeniorAdminChat() {
+        return this.inSeniorAdminchat;
+    }
+    
+    // End FOPM Changes //
 
     public String getIpAddress()
     {
